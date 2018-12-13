@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>Lykke.Quintessence</RootNamespace>
+        <Version>1.0.1</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Lykke.Quintessence.AzureRepositories\Lykke.Quintessence.AzureRepositories.csproj" />
+      <ProjectReference Include="..\Lykke.Quintessence.Job.DomainServices\Lykke.Quintessence.Job.DomainServices.csproj" />
+      <ProjectReference Include="..\Lykke.Quintessence.Job.Domain\Lykke.Quintessence.Job.Domain.csproj" />
+      <ProjectReference Include="..\Lykke.Quintessence.RpcClient\Lykke.Quintessence.RpcClient.csproj" />
+      <ProjectReference Include="..\Lykke.Quintessence.Runtime\Lykke.Quintessence.Runtime.csproj" />
+    </ItemGroup>
+
+</Project>

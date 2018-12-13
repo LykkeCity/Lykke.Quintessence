@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+        <LangVersion>7.1</LangVersion>
+        <Version>1.0.1</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Lykke.Quintessence.Core.Telemetry\Lykke.Quintessence.Core.Telemetry.csproj" />
+      <ProjectReference Include="..\..\src\Lykke.Quintessence.Job\Lykke.Quintessence.Job.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="settings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+</Project>

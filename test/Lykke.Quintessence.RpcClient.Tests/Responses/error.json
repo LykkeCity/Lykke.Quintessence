@@ -1,0 +1,13 @@
+{
+  "id":67,
+  "jsonrpc": "2.0",
+  "error": {
+    "code": 3,
+    "message": "Execution error",
+    "data": [
+      {
+        "customData": "42"
+      }
+    ]
+  }
+}
