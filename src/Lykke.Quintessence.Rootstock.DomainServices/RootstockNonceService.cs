@@ -10,15 +10,15 @@ namespace Lykke.Quintessence.Domain.Services
     [UsedImplicitly]
     public class RootstockNonceService : IRootstockNonceService
     {
-        private readonly IEthApiClient _ethApiClient;
+        private readonly IApiClient _apiClient;
         private readonly IRootstockNonceRepository _rootstockNonceRepository;
 
         
         public RootstockNonceService(
-            IEthApiClient ethApiClient,
+            IApiClient apiClient,
             IRootstockNonceRepository rootstockNonceRepository)
         {
-            _ethApiClient = ethApiClient;
+            _apiClient = apiClient;
             _rootstockNonceRepository = rootstockNonceRepository;
         }
 
@@ -30,7 +30,7 @@ namespace Lykke.Quintessence.Domain.Services
 
             if (nextNonce == null)
             {
-                nextNonce = await _ethApiClient.GetTransactionCountAsync(address);
+                nextNonce = await _apiClient.GetTransactionCountAsync(address);
 
                 await _rootstockNonceRepository.InsertOrReplaceAsync(address, nextNonce.Value);
             }

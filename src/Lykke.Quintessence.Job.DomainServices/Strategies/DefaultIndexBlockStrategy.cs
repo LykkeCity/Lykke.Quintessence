@@ -32,6 +32,7 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
             var affectedAddresses = transactionReceipts
                 .Select(GetAddresses)
                 .SelectMany(x => x)
+                .Where(x => !string.IsNullOrEmpty(x) && x != "0x")
                 .Distinct();
             
             var ownAddresses = new List<string>();

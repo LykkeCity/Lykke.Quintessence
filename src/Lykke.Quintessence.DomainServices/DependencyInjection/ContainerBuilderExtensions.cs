@@ -53,7 +53,7 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
                     ctx => new DefaultGetTransactionReceiptsStrategy
                     (
                         ctx.Resolve<IDetectContractStrategy>(),
-                        ctx.Resolve<IEthApiClient>(),
+                        ctx.Resolve<IApiClient>(),
                         ctx.Resolve<IParityApiClient>()
                     )
                 )

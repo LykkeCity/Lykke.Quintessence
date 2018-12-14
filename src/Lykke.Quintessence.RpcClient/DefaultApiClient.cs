@@ -16,11 +16,11 @@ using Newtonsoft.Json.Linq;
 namespace Lykke.Quintessence.RpcClient
 {
     [UsedImplicitly]
-    public class DefaultEthApiClient : ApiClientBase, IEthApiClient
+    public class DefaultApiClient : ApiClientBase, IApiClient
     {
         protected const string BestBlockIdentifier = "latest";
         
-        public DefaultEthApiClient(
+        public DefaultApiClient(
             ISendRpcRequestStrategy sendRpcRequestStrategy)
         
             : base(sendRpcRequestStrategy)
@@ -104,7 +104,7 @@ namespace Lykke.Quintessence.RpcClient
         public async Task<string> GetCodeAsync(
             string address)
         {
-            var requestParams = new[] { address, BestBlockIdentifier };
+            var requestParams = new object[] { address, BestBlockIdentifier };
             var request = new RpcRequest("eth_getCode", requestParams);
             var response = await SendRpcRequestAsync(request);
 
@@ -124,7 +124,7 @@ namespace Lykke.Quintessence.RpcClient
         public async Task<Transaction> GetTransactionAsync(
             string transactionHash)
         {
-            var requestParams = new[] { transactionHash };
+            var requestParams = new object[] { transactionHash };
             var request = new RpcRequest("eth_getTransactionByHash", requestParams);
             var response = await SendRpcRequestAsync(request);
 
@@ -137,7 +137,7 @@ namespace Lykke.Quintessence.RpcClient
         public async Task<BigInteger> GetTransactionCountAsync(
             string address)
         {
-            var requestParams = new[] { address, BestBlockIdentifier };
+            var requestParams = new object[] { address, BestBlockIdentifier };
             var request = new RpcRequest("eth_getTransactionCount", requestParams);
             var response = await SendRpcRequestAsync(request);
             
@@ -148,7 +148,7 @@ namespace Lykke.Quintessence.RpcClient
         public async Task<TransactionReceipt> GetTransactionReceiptAsync(
             string transactionHash)
         {
-            var requestParams = new[] { transactionHash };
+            var requestParams = new object[] { transactionHash };
             var request = new RpcRequest("eth_getTransactionReceipt", requestParams);
             var response = await SendRpcRequestAsync(request);
 
@@ -176,7 +176,7 @@ namespace Lykke.Quintessence.RpcClient
         public async Task<string> SendRawTransactionAsync(
             string transactionData)
         {
-            var requestParams = new[] {transactionData};
+            var requestParams = new object[] { transactionData };
             var request = new RpcRequest("eth_sendRawTransaction", requestParams);
             var response = await SendRpcRequestAsync(request);
             
@@ -187,7 +187,7 @@ namespace Lykke.Quintessence.RpcClient
             string address,
             string blockIdentifier)
         {
-            var requestParams = new[] { address, blockIdentifier };
+            var requestParams = new object[] { address, blockIdentifier };
             var request = new RpcRequest("eth_getBalance", requestParams);
             var response = await SendRpcRequestAsync(request);
 

@@ -11,20 +11,20 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
     [UsedImplicitly]
     public class RootstockGetTransactionReceiptsStrategy : IGetTransactionReceiptsStrategy
     {
-        private readonly IEthApiClient _ethApiClient;
+        private readonly IApiClient _apiClient;
 
         
         public RootstockGetTransactionReceiptsStrategy(
-            IEthApiClient ethApiClient)
+            IApiClient apiClient)
         {
-            _ethApiClient = ethApiClient;
+            _apiClient = apiClient;
         }
 
         
         public async Task<IEnumerable<TransactionReceipt>> ExecuteAsync(
             BigInteger blockNumber)
         {
-            var block = await _ethApiClient.GetBlockAsync
+            var block = await _apiClient.GetBlockAsync
             (
                 blockNumber: blockNumber,
                 includeTransactions: true

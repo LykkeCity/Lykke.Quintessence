@@ -40,7 +40,7 @@ namespace Lykke.Quintessence.Modules
                     rpcNodeSettings.ConnectionTimeout,
                     rpcNodeSettings.EnableTelemetry
                 )
-                .AddDefaultEthApi()
+                .AddDefaultApi()
                 .AddDefaultParityApi();
 
             builder

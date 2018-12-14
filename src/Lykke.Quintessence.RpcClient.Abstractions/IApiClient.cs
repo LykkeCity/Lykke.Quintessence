@@ -7,7 +7,7 @@ using Lykke.Quintessence.RpcClient.Models;
 namespace Lykke.Quintessence.RpcClient
 {
     [PublicAPI]
-    public interface IEthApiClient
+    public interface IApiClient
     {
         /// <summary>
         ///    Generates test transaction, executes it and returns an estimate of how much gas is necessary to allow the transaction to complete.

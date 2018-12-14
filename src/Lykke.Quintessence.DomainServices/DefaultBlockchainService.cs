@@ -21,7 +21,7 @@ namespace Lykke.Quintessence.Domain.Services
     {
         private readonly SettingManager<int> _confirmationLevel;
         private readonly IDetectContractStrategy _detectContractStrategy;
-        private readonly IEthApiClient _ethApiClient;
+        private readonly IApiClient _apiClient;
         private readonly SettingManager<string, (BigInteger, BigInteger)> _gasPriceRange;
         private readonly IGetTransactionReceiptsStrategy _getTransactionReceiptsStrategy;
         private readonly INonceService _nonceService;
@@ -29,13 +29,13 @@ namespace Lykke.Quintessence.Domain.Services
         
         public DefaultBlockchainService(
             IDetectContractStrategy detectContractStrategy,
-            IEthApiClient ethApiClient,
+            IApiClient apiClient,
             IGetTransactionReceiptsStrategy getTransactionReceiptsStrategy,
             INonceService nonceService,
             Settings settings)
         {
             _detectContractStrategy = detectContractStrategy;
-            _ethApiClient = ethApiClient;
+            _apiClient = apiClient;
             _getTransactionReceiptsStrategy = getTransactionReceiptsStrategy;
             _nonceService = nonceService;
          
@@ -59,16 +59,16 @@ namespace Lykke.Quintessence.Domain.Services
             var serializedTransaction = signedTxData.HexToUTF8String();
             var transaction = JsonConvert.DeserializeObject<DefaultRawTransaction>(serializedTransaction);
 
-            if (await _ethApiClient.GetTransactionAsync(transaction.Hash) != null)
+            if (await _apiClient.GetTransactionAsync(transaction.Hash) != null)
             {
                 return transaction.Hash;
             }
             
-            await _ethApiClient.SendRawTransactionAsync(transaction.Data);
+            await _apiClient.SendRawTransactionAsync(transaction.Data);
                 
             for (var i = 0; i < 10; i++)
             {
-                if (await _ethApiClient.GetTransactionAsync(transaction.Hash) != null)
+                if (await _apiClient.GetTransactionAsync(transaction.Hash) != null)
                 {
                     return transaction.Hash;
                 }
@@ -108,7 +108,7 @@ namespace Lykke.Quintessence.Domain.Services
         {
             var (minGasPrice, maxGasPrice) = await _gasPriceRange.GetValueAsync();
 
-            var estimatedGasPrice = await _ethApiClient.GetGasPriceAsync();
+            var estimatedGasPrice = await _apiClient.GetGasPriceAsync();
 
             if (estimatedGasPrice >= maxGasPrice)
             {
@@ -127,19 +127,19 @@ namespace Lykke.Quintessence.Domain.Services
         public virtual Task<BigInteger> GetBalanceAsync(
             string address)
         {
-            return _ethApiClient.GetBalanceAsync(address);
+            return _apiClient.GetBalanceAsync(address);
         }
 
         public virtual Task<BigInteger> GetBalanceAsync(
             string address,
             BigInteger blockNumber)
         {
-            return _ethApiClient.GetBalanceAsync(address, blockNumber);
+            return _apiClient.GetBalanceAsync(address, blockNumber);
         }
 
         public virtual async Task<BigInteger> GetBestTrustedBlockNumberAsync()
         {
-            var bestBlockNumber = await _ethApiClient.GetBestBlockNumberAsync();
+            var bestBlockNumber = await _apiClient.GetBestBlockNumberAsync();
             var confirmationLevel = await _confirmationLevel.GetValueAsync();
 
             return bestBlockNumber - confirmationLevel;
@@ -154,7 +154,7 @@ namespace Lykke.Quintessence.Domain.Services
         public virtual async Task<TransactionResult> GetTransactionResultAsync(
             string hash)
         {
-            var transactionReceipt = await _ethApiClient.GetTransactionReceiptAsync(hash);
+            var transactionReceipt = await _apiClient.GetTransactionReceiptAsync(hash);
 
             if (transactionReceipt == null)
             {
@@ -195,7 +195,7 @@ namespace Lykke.Quintessence.Domain.Services
         public virtual async Task<bool> IsContractAsync(
             string address)
         {
-            var code = await _ethApiClient.GetCodeAsync(address);
+            var code = await _apiClient.GetCodeAsync(address);
 
             return _detectContractStrategy.Execute(code);
         }
@@ -207,7 +207,7 @@ namespace Lykke.Quintessence.Domain.Services
         {
             try
             {
-                return await _ethApiClient.EstimateGasAmountAsync
+                return await _apiClient.EstimateGasAmountAsync
                 (
                     from: from,
                     to: to,

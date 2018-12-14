@@ -10,19 +10,19 @@ namespace Lykke.Quintessence.Domain.Services
 {
     public class RootstockBlockchainService : DefaultBlockchainService
     {
-        private readonly IEthApiClient _ethApiClient;
+        private readonly IApiClient _apiClient;
         private readonly IRootstockNonceService _nonceService;
         
         public RootstockBlockchainService(
             IDetectContractStrategy detectContractStrategy,
-            IEthApiClient ethApiClient,
+            IApiClient apiClient,
             IGetTransactionReceiptsStrategy getTransactionReceiptsStrategy,
             IRootstockNonceService nonceService,
             Settings settings) 
             
-            : base(detectContractStrategy, ethApiClient, getTransactionReceiptsStrategy, nonceService, settings)
+            : base(detectContractStrategy, apiClient, getTransactionReceiptsStrategy, nonceService, settings)
         {
-            _ethApiClient = ethApiClient;
+            _apiClient = apiClient;
             _nonceService = nonceService;
         }
 
@@ -32,16 +32,16 @@ namespace Lykke.Quintessence.Domain.Services
             var serializedTransaction = signedTxData.HexToUTF8String();
             var transaction = JsonConvert.DeserializeObject<DefaultRawTransaction>(serializedTransaction);
 
-            if (await _ethApiClient.GetTransactionAsync(transaction.Hash) != null)
+            if (await _apiClient.GetTransactionAsync(transaction.Hash) != null)
             {
                 return transaction.Hash;
             }
             
-            await _ethApiClient.SendRawTransactionAsync(transaction.Data);
+            await _apiClient.SendRawTransactionAsync(transaction.Data);
                 
             for (var i = 0; i < 10; i++)
             {
-                if (await _ethApiClient.GetTransactionAsync(transaction.Hash) != null)
+                if (await _apiClient.GetTransactionAsync(transaction.Hash) != null)
                 {
                     await _nonceService.IncreaseNonceAsync(transaction.From);
                     

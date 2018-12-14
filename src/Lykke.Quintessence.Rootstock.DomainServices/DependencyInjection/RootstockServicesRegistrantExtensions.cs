@@ -33,7 +33,7 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
                     ctx => new RootstockBlockchainService
                     (
                         ctx.Resolve<IDetectContractStrategy>(),
-                        ctx.Resolve<IEthApiClient>(),
+                        ctx.Resolve<IApiClient>(),
                         ctx.Resolve<IGetTransactionReceiptsStrategy>(),
                         ctx.Resolve<IRootstockNonceService>(),
                         settings
@@ -54,7 +54,7 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
                 (
                     ctx => new RootstockNonceService
                     (
-                        ctx.Resolve<IEthApiClient>(),
+                        ctx.Resolve<IApiClient>(),
                         ctx.Resolve<IRootstockNonceRepository>()
                     )
                 )

@@ -69,7 +69,7 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
                     ctx => new DefaultBlockchainService
                     (
                         ctx.Resolve<IDetectContractStrategy>(),
-                        ctx.Resolve<IEthApiClient>(),
+                        ctx.Resolve<IApiClient>(),
                         ctx.Resolve<IGetTransactionReceiptsStrategy>(),
                         ctx.Resolve<INonceService>(),
                         settings   

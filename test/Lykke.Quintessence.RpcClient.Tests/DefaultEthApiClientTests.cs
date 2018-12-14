@@ -200,10 +200,10 @@ namespace Lykke.Quintessence.RpcClient
                 .Be("0xe670ec64341771606e55d6b4ca35a1a6b75ee3d5145a99d05921026d1527331");
         }
         
-        private static IEthApiClient GetClient(
+        private static IApiClient GetClient(
             string requestAndResponseSubPath)
         {
-            return new DefaultEthApiClient
+            return new DefaultApiClient
             (
                 new SendRpcRequestStrategy(requestAndResponseSubPath, true)
             );
@@ -301,11 +301,11 @@ namespace Lykke.Quintessence.RpcClient
             }
         }
         
-        private static IEthApiClient GetClient(
+        private static IApiClient GetClient(
             string requestSubPath,
             string responseSubPath)
         {
-            return new DefaultEthApiClient
+            return new DefaultApiClient
             (
                 new SendRpcRequestStrategy(requestSubPath, responseSubPath)
             );

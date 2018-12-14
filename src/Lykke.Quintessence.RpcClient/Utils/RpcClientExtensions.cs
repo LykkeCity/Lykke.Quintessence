@@ -13,19 +13,19 @@ namespace Lykke.Quintessence.RpcClient.Utils
         
         
         public static async Task<bool> IsContractAsync(
-            this IEthApiClient ethApiClient,
+            this IApiClient apiClient,
             string address)
         {
-            var code = await ethApiClient.GetCodeAsync(address);
+            var code = await apiClient.GetCodeAsync(address);
 
             return !WalletCodeVariants.Contains(code);
         }
         
         public static async Task<bool> IsWalletAsync(
-            this IEthApiClient ethApiClient,
+            this IApiClient apiClient,
             string address)
         {
-            var code = await ethApiClient.GetCodeAsync(address);
+            var code = await apiClient.GetCodeAsync(address);
 
             return WalletCodeVariants.Contains(code);
         }

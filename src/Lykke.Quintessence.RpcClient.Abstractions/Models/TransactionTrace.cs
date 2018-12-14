@@ -14,22 +14,14 @@ namespace Lykke.Quintessence.RpcClient.Models
             string blockHash,
             BigInteger blockNumber,
             string error,
-            TransactionResult result,
-            int subTraces,
-            IEnumerable<int> traceAddresses,
             string transactionHash,
-            int transactionPosition,
             string type)
         {
             Action = action;
             BlockHash = blockHash;
             BlockNumber = blockNumber;
             Error = error;
-            Result = result;
-            SubTraces = subTraces;
-            TraceAddresses = traceAddresses.ToImmutableArray();
             TransactionHash = transactionHash;
-            TransactionPosition = transactionPosition;
             Type = type;
         }
 
@@ -42,15 +34,7 @@ namespace Lykke.Quintessence.RpcClient.Models
 
         public string Error { get; }
 
-        public TransactionResult Result { get; }
-
-        public int SubTraces { get; }
-
-        public ImmutableArray<int> TraceAddresses { get; }
-
         public string TransactionHash { get; }
-
-        public int TransactionPosition { get; }
 
         public string Type { get; }
 
@@ -61,13 +45,11 @@ namespace Lykke.Quintessence.RpcClient.Models
             public TransactionAction(
                 string callType,
                 string from,
-                BigInteger gas,
                 string to,
                 BigInteger value)
             {
                 CallType = callType;
                 From = from;
-                Gas = gas;
                 To = to;
                 Value = value;
             }
@@ -76,31 +58,9 @@ namespace Lykke.Quintessence.RpcClient.Models
 
             public string From { get; }
 
-            public BigInteger Gas { get; }
-            
             public string To { get; }
 
             public BigInteger Value { get; }
-        }
-
-        [PublicAPI]
-        public class TransactionResult
-        {
-            public TransactionResult(
-                string address,
-                BigInteger gasUsed, 
-                string output)
-            {
-                GasUsed = gasUsed;
-                Output = output;
-                Address = address;
-            }
-
-            public string Address { get; }
-            
-            public BigInteger GasUsed { get; }
-
-            public string Output { get; }
         }
     }
 }

@@ -12,18 +12,18 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
     public class DefaultGetTransactionReceiptsStrategy : IGetTransactionReceiptsStrategy
     {
         private readonly IDetectContractStrategy _detectContractStrategy;
-        private readonly IEthApiClient _ethApiClient;
+        private readonly IApiClient _apiClient;
         private readonly IParityApiClient _parityApiClient;
         private readonly string[] _valueTransferCallCodes = { "CREATE", "CALL", "CALLCODE", "DELEGATECALL", "SUICIDE" };
 
 
         public DefaultGetTransactionReceiptsStrategy(
             IDetectContractStrategy detectContractStrategy,
-            IEthApiClient ethApiClient,
+            IApiClient apiClient,
             IParityApiClient parityApiClient)
         {
             _detectContractStrategy = detectContractStrategy;
-            _ethApiClient = ethApiClient;
+            _apiClient = apiClient;
             _parityApiClient = parityApiClient;
         }
 
@@ -31,7 +31,7 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
         public async Task<IEnumerable<TransactionReceipt>> ExecuteAsync(
             BigInteger blockNumber)
         {
-            var block = await _ethApiClient.GetBlockAsync
+            var block = await _apiClient.GetBlockAsync
             (
                 blockNumber: blockNumber,
                 includeTransactions: true
@@ -76,7 +76,7 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
         private async Task<bool> IsContractAsync(
             string address)
         {
-            var code = await _ethApiClient.GetCodeAsync(address);
+            var code = await _apiClient.GetCodeAsync(address);
 
             return _detectContractStrategy.Execute(code);
         }

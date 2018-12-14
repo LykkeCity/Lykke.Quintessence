@@ -6,7 +6,7 @@ namespace Lykke.Quintessence.RpcClient.DependencyInjection
     [PublicAPI]
     public static class RpcClientBuilderExtensions
     {
-        public static IRpcClientBuilder AddDefaultEthApi(
+        public static IRpcClientBuilder AddDefaultApi(
             this IRpcClientBuilder builder)
         {
             builder
@@ -14,10 +14,10 @@ namespace Lykke.Quintessence.RpcClient.DependencyInjection
 
             builder
                 .Builder
-                .RegisterType<DefaultEthApiClient>()
-                .As<IEthApiClient>()
+                .RegisterType<DefaultApiClient>()
+                .As<IApiClient>()
                 .SingleInstance()
-                .IfNotRegistered(typeof(IEthApiClient));
+                .IfNotRegistered(typeof(IApiClient));
 
             return builder;
         }
