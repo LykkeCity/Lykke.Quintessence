@@ -8,13 +8,44 @@ namespace Lykke.Quintessence.Domain.Services
     [UsedImplicitly]
     public class DefaultTransactionHistoryService : ITransactionHistoryService
     {
+        private readonly ITransactionHistoryObservationAddressesRepository _transactionHistoryObservationAddressesRepository;
         private readonly ITransactionReceiptRepository _transactionReceiptRepository;
 
         
         public DefaultTransactionHistoryService(
+            ITransactionHistoryObservationAddressesRepository transactionHistoryObservationAddressesRepository,
             ITransactionReceiptRepository transactionReceiptRepository)
         {
+            _transactionHistoryObservationAddressesRepository = transactionHistoryObservationAddressesRepository;
             _transactionReceiptRepository = transactionReceiptRepository;
+        }
+
+        /// <inheritdoc />
+        public Task<bool> BeginIncomingHistoryObservationIfNotObservingAsync(
+            string address)
+        {
+            return _transactionHistoryObservationAddressesRepository.TryAddToIncomingHistoryObservationList(address);
+        }
+
+        /// <inheritdoc />
+        public Task<bool> BeginOutgoingHistoryObservationIfNotObservingAsync(
+            string address)
+        {
+            return _transactionHistoryObservationAddressesRepository.TryAddToOutgoingHistoryObservationList(address);
+        }
+
+        /// <inheritdoc />
+        public Task<bool> EndIncomingHistoryObservationIfObservingAsync(
+            string address)
+        {
+            return _transactionHistoryObservationAddressesRepository.TryDeleteFromIncomingHistoryObservationList(address);
+        }
+
+        /// <inheritdoc />
+        public Task<bool> EndOutgoingHistoryObservationIfObservingAsync(
+            string address)
+        {
+            return _transactionHistoryObservationAddressesRepository.TryDeleteFromOutgoingHistoryObservationList(address);
         }
 
         /// <inheritdoc />

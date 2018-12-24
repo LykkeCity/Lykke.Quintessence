@@ -79,6 +79,13 @@ namespace Lykke.Quintessence.Domain.Repositories.DependencyInjection
             return registrant
                 .RegisterDefaultRepository(DefaultBlacklistedAddressRepository.Create);
         }
+
+        public static IAzureRepositoriesRegistrant AddDefaultTransactionHistoryObservationAddressesRepository(
+            this IAzureRepositoriesRegistrant registrant)
+        {
+            return registrant
+                .RegisterDefaultRepository(DefaultTransactionHistoryObservationAddressesRepository.Create);
+        }
         
         public static IAzureRepositoriesRegistrant AddDefaultTransactionMonitoringTaskRepository(
             this IAzureRepositoriesRegistrant registrant)

@@ -43,6 +43,7 @@ namespace Lykke.Quintessence.Modules
                 .AddDefaultBalanceRepository()
                 .AddDefaultBalanceMonitoringTaskRepository()
                 .AddDefaultBlacklistedAddressRepository()
+                .AddDefaultTransactionHistoryObservationAddressesRepository()
                 .AddDefaultTransactionMonitoringTaskRepository()
                 .AddDefaultTransactionReceiptRepository()
                 .AddDefaultTransactionRepository()

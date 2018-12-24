@@ -30,6 +30,70 @@ namespace Lykke.Quintessence.Controllers
         }
         
         
+        [HttpPost("to/{address}/observation")]
+        public async Task<IActionResult> AddAddressToIncomingHistoryObservationList(
+            AddressRequest request)
+        {
+            var address = request.Address.ToLowerInvariant();
+            
+            if (await _transactionHistoryService.BeginIncomingHistoryObservationIfNotObservingAsync(address))
+            {
+                return Ok();
+            }
+            else
+            {
+                return Conflict();
+            }
+        }
+        
+        [HttpPost("from/{address}/observation")]
+        public async Task<IActionResult> AddAddressToOutgoingHistoryObservationList(
+            AddressRequest request)
+        {
+            var address = request.Address.ToLowerInvariant();
+            
+            if (await _transactionHistoryService.BeginOutgoingHistoryObservationIfNotObservingAsync(address))
+            {
+                return Ok();
+            }
+            else
+            {
+                return Conflict();
+            }
+        }
+        
+        [HttpDelete("to/{address}/observation")]
+        public async Task<IActionResult> DeleteAddressFromIncomingHistoryObservationList(
+            AddressRequest request)
+        {
+            var address = request.Address.ToLowerInvariant();
+            
+            if (await _transactionHistoryService.EndIncomingHistoryObservationIfObservingAsync(address))
+            {
+                return Ok();
+            }
+            else
+            {
+                return NoContent();
+            }
+        }
+        
+        [HttpDelete("from/{address}/observation")]
+        public async Task<IActionResult> DeleteAddressToOutgoingHistoryObservationList(
+            AddressRequest request)
+        {
+            var address = request.Address.ToLowerInvariant();
+            
+            if (await _transactionHistoryService.EndOutgoingHistoryObservationIfObservingAsync(address))
+            {
+                return Ok();
+            }
+            else
+            {
+                return NoContent();
+            }
+        }
+        
         [HttpGet("to/{address}")]
         public async Task<ActionResult<IEnumerable<HistoricalTransactionContract>>> GetIncomingHistory(
             TransactionHistoryRequest request)

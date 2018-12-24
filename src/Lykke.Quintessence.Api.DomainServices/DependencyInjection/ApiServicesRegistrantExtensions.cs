@@ -44,6 +44,7 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
                 (
                     ctx => new DefaultTransactionHistoryService
                     (
+                        ctx.Resolve<ITransactionHistoryObservationAddressesRepository>(),
                         ctx.Resolve<ITransactionReceiptRepository>()
                     )
                 )
