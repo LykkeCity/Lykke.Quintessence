@@ -28,9 +28,9 @@ namespace Lykke.Quintessence.Domain.Repositories
         {
             var observableAccountStates = AzureTableStorage<BalanceEntity>.Create
             (
-                connectionString,
-                "ObservableBalances",
-                logFactory
+                connectionStringManager: connectionString,
+                tableName: "ObservableBalances",
+                logFactory: logFactory
             );
             
             return new DefaultBalanceRepository(observableAccountStates);

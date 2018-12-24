@@ -45,6 +45,7 @@ namespace Lykke.Quintessence.Modules
 
             builder
                 .UseAzureRepositories(connectionString)
+                .AddDefaultBalanceRepository()
                 .AddDefaultBalanceMonitoringTaskRepository()
                 .AddDefaultBalanceRepository()
                 .AddDefaultBlockchainIndexationStateRepository()
