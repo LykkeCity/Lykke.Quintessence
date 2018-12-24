@@ -12,7 +12,7 @@ namespace Lykke.Quintessence.Validators
         public SignTransactionRequestValidator()
         {
             RuleFor(x => x.TransactionContext)
-                .Must((request, ctx) => Regex.IsMatch(request.PrivateKeys.Single(), @"^0x[0-9a-f]+$"))
+                .Must((request, ctx) => Regex.IsMatch(request.TransactionContext, @"^0x[0-9a-f]+$"))
                 .WithMessage(x => "Request contains transaction context, that is not properly formatted.");
             
             RuleFor(x => x.PrivateKeys)
