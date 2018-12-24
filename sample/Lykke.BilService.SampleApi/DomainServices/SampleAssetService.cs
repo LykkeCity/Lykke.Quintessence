@@ -6,7 +6,7 @@ namespace Lykke.BilService.SampleApi.DomainServices
     {
         public SampleAssetService() 
             
-            : base(18, "", "", "")
+            : base(18, "", "ETH", "ETH")
         {
             
         }

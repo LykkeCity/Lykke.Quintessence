@@ -7,7 +7,7 @@ namespace Lykke.Quintessence.Core.Utils
         public static string ToHex(
             this string str)
         {
-            return "0x" + Encoding.UTF8.GetBytes(str).ToHexString();
+            return Encoding.UTF8.GetBytes(str).ToHexString();
         }
     }
 }
