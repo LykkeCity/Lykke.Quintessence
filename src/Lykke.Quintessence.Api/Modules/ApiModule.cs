@@ -1,5 +1,6 @@
 using Autofac;
 using JetBrains.Annotations;
+using Lykke.Common.Chaos;
 using Lykke.Quintessence.Domain.Repositories.DependencyInjection;
 using Lykke.Quintessence.Domain.Services.DependencyInjection;
 using Lykke.Quintessence.RpcClient.DependencyInjection;
@@ -28,6 +29,9 @@ namespace Lykke.Quintessence.Modules
             var connectionString = _appSettings.ConnectionString(x => x.Api.Db.DataConnString);
             var rpcNodeSettings = apiSettings.CurrentValue.RpcNode;
 
+            builder
+                .RegisterChaosKitty(_appSettings.CurrentValue.Chaos);
+            
             builder
                 .UseRpcClient
                 (

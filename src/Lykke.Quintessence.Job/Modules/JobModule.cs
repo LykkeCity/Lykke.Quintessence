@@ -31,7 +31,7 @@ namespace Lykke.Quintessence.Modules
             var rpcNodeSettings = jobSettings.CurrentValue.RpcNode;
             
             builder
-                .RegisterChaosKitty(jobSettings.CurrentValue.Chaos);
+                .RegisterChaosKitty(_appSettings.CurrentValue.Chaos);
             
             builder
                 .UseRpcClient

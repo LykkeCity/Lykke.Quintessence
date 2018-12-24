@@ -18,7 +18,8 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
             _indexOnlyOwnTransactions = indexOnlyOwnTransaction;
         }
 
-        public async Task ExecuteAsync(IBalanceRepository balanceRepository,
+        public async Task ExecuteAsync(
+            IBalanceRepository balanceRepository,
             IBalanceMonitoringTaskRepository balanceMonitoringTaskRepository,
             ITransactionReceiptRepository transactionReceiptRepository,
             IBlockchainService blockchainService,

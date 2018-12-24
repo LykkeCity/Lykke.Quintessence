@@ -14,9 +14,6 @@ namespace Lykke.Quintessence.Settings
         
         public TimeSpan BlockLockDuration { get; set; }
         
-        [Optional]
-        public ChaosSettings Chaos { get; set; } 
-        
         public int ConfirmationLevel { get; set; }
         
         public DbSettings Db { get; set; }

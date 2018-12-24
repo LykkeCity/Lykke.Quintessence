@@ -1,5 +1,7 @@
 using JetBrains.Annotations;
+using Lykke.Common.Chaos;
 using Lykke.Sdk.Settings;
+using Lykke.SettingsReader.Attributes;
 
 namespace Lykke.Quintessence.Settings
 {
@@ -7,6 +9,10 @@ namespace Lykke.Quintessence.Settings
     public class AppSettings<T> : BaseAppSettings
         where T : JobSettings
     {
+                
+        [Optional]
+        public ChaosSettings Chaos { get; set; }
+        
         public T Job { get; set; }
     }
 }
