@@ -2,6 +2,7 @@ using Autofac;
 using JetBrains.Annotations;
 using Lykke.BilService.SampleApi.DomainServices;
 using Lykke.Quintessence.Core.DependencyInjection;
+using Lykke.Quintessence.Core.Telemetry.DependencyInjection;
 using Lykke.Quintessence.Domain.Services.DependencyInjection;
 
 namespace Lykke.BilService.SampleApi.Modules
@@ -13,6 +14,7 @@ namespace Lykke.BilService.SampleApi.Modules
             ContainerBuilder builder)
         {
             builder
+                .UseAITelemetryConsumer()
                 .UseChainId(0)
                 .UseAssetService<SampleAssetService>();
         }

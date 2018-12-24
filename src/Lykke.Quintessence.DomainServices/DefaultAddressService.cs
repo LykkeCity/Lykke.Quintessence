@@ -179,7 +179,7 @@ namespace Lykke.Quintessence.Domain.Services
                 return AddressValidationResult.AddressIsInvalid(AddressValidationError.FormatIsInvalid);
             }
 
-            if (skipChecksumValidation || await _validateChecksumStrategy.ExecuteAsync(address))
+            if (skipChecksumValidation || !await _validateChecksumStrategy.ExecuteAsync(address))
             {
                 return AddressValidationResult.AddressIsInvalid(AddressValidationError.ChecksumIsInvalid);
             }

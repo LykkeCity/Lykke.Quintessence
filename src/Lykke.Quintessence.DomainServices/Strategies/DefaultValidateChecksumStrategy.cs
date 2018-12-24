@@ -20,7 +20,7 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
             string address)
         {
             var unprefixedAddress = address.Remove(0, 2);
-            
+
             return unprefixedAddress == unprefixedAddress.ToLowerInvariant()
                 || unprefixedAddress == unprefixedAddress.ToUpperInvariant()
                 || address == (await _addChecksumStrategy.ExecuteAsync(address));

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Lykke.Quintessence.Api\Lykke.Quintessence.Api.csproj" />
+      <ProjectReference Include="..\..\src\Lykke.Quintessence.Core.Telemetry\Lykke.Quintessence.Core.Telemetry.csproj" />
     </ItemGroup>
 
     <ItemGroup>
