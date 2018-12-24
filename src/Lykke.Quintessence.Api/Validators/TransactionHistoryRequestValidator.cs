@@ -15,7 +15,7 @@ namespace Lykke.Quintessence.Validators
                 .AddressMustBeValid(addressService);
 
             RuleFor(x => x.Take)
-                .GreaterThan(1);
+                .GreaterThan(0);
         }
     }
 }
