@@ -23,9 +23,9 @@ namespace Lykke.Quintessence.Validators
 
             RuleFor(x => x.ToAddress)
                 .AddressMustBeValid(addressService);
-            
+
             RuleFor(x => x.AssetId)
-                .AssetMustBeSupported(assetService);
+                .AssetMustBeValidAndSupported(assetService);
         }
     }
 }

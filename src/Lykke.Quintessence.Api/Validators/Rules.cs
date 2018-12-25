@@ -17,8 +17,25 @@ namespace Lykke.Quintessence.Validators
             this IRuleBuilderInitial<T, string> ruleBuilder)
         {
             ruleBuilder
-                .Must(amount => BigInteger.TryParse(amount, out var amountParsed) && amountParsed > 0)
-                .WithMessage(x => "Amount must be greater than zero.");
+                .Must((rootObject, amount, context) =>
+                {
+                    if (string.IsNullOrWhiteSpace(amount))
+                    {
+                        context.MessageFormatter.AppendArgument("Reason", "Must be specified.");
+
+                        return false;
+                    }
+
+                    if (!BigInteger.TryParse(amount, out var amountParsed) || amountParsed <= 0)
+                    {
+                        context.MessageFormatter.AppendArgument("Reason", "Must be greater than zero.");
+
+                        return false;
+                    }
+
+                    return true;
+                })
+                .WithMessage("{Reason}");
         }
 
         public static void AddressMustBeValid<T>(
@@ -28,6 +45,13 @@ namespace Lykke.Quintessence.Validators
             ruleBuilder
                 .MustAsync(async (rootObject, address, context, cancellationToken) =>
                 {
+                    if (address == null)
+                    {
+                        context.MessageFormatter.AppendArgument("Reason", "Must be specified.");
+
+                        return false;
+                    }
+                    
                     var validationResult = await addressService.ValidateAsync(address, false, false);
 
                     if (validationResult is AddressValidationResult.Error error)
@@ -68,13 +92,30 @@ namespace Lykke.Quintessence.Validators
                 .WithMessage("{Reason}");
         }
 
-        public static void AssetMustBeSupported<T>(
+        public static void AssetMustBeValidAndSupported<T>(
             this IRuleBuilderInitial<T, string> ruleBuilder,
             IAssetService assetService)
         {
             ruleBuilder
-                .Must(assetId => assetService.Get().Id == assetId)
-                .WithMessage("Asset is not supported.");
+                .Must((rootObject, assetId, context) =>
+                {
+                    if (string.IsNullOrWhiteSpace(assetId))
+                    {
+                        context.MessageFormatter.AppendArgument("Reason", "Must be specified.");
+
+                        return false;
+                    }
+
+                    if (assetService.Get().Id != assetId)
+                    {
+                        context.MessageFormatter.AppendArgument("Reason", "Must be supported.");
+
+                        return false;
+                    }
+
+                    return true;
+                })
+                .WithMessage("{Reason}");
         }
         
         public static void TransactionIdMustBeNonEmptyGuid<T>(
@@ -82,14 +123,14 @@ namespace Lykke.Quintessence.Validators
         {
             ruleBuilder
                 .Must(transactionId => transactionId != Guid.Empty)
-                .WithMessage(x => "Specified transaction id is empty.");
+                .WithMessage(x => "Must not be empty.");
         }
 
         public static void MustBeHexString<T>(
             this IRuleBuilderInitial<T, string> ruleBuilder)
         {
             ruleBuilder
-                .Must(@string => HexStringExpression.IsMatch(@string))
+                .Must(@string => @string != null && HexStringExpression.IsMatch(@string))
                 .WithMessage(x => "Must be a hex string.");
         }
     }
