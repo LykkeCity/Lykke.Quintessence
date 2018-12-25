@@ -1,6 +1,10 @@
+using System.Linq;
 using System.Numerics;
 using JetBrains.Annotations;
+using Lykke.Quintessence.Core.Utils;
+using Nethereum.RLP;
 using Nethereum.Signer;
+using Nethereum.Signer.Crypto;
 
 namespace Lykke.Quintessence.Core.Blockchain.Strategies
 {
@@ -21,7 +25,13 @@ namespace Lykke.Quintessence.Core.Blockchain.Strategies
             byte[][] transactionElements,
             byte[] privateKey)
         {
-            var signer = new RLPSigner(transactionElements);
+            transactionElements = transactionElements
+                .Append(_chainId.ToBytesForRLPEncoding())
+                .Append(0.ToBytesForRLPEncoding())
+                .Append(0.ToBytesForRLPEncoding())
+                .ToArray();
+            
+            var signer = new RLPSigner(transactionElements, 6);
             var key = new EthECKey(privateKey, true);
             
             signer.Sign(key, _chainId);
