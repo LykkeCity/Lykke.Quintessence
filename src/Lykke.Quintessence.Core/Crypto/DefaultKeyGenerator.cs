@@ -1,3 +1,4 @@
+using System.Linq;
 using JetBrains.Annotations;
 using Nethereum.Signer.Crypto;
 using Org.BouncyCastle.Crypto;
@@ -41,7 +42,10 @@ namespace Lykke.Quintessence.Core.Crypto
         {
             var ecKey = new ECKey(privateKey, true);
 
-            return ecKey.GetPubKey(false);
+            return ecKey
+                .GetPubKey(false)
+                .Skip(1) // Skipping prefix
+                .ToArray();
         }
     }
 }

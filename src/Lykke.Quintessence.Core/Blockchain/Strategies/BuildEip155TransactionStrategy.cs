@@ -1,8 +1,10 @@
 using System.Numerics;
+using JetBrains.Annotations;
 using Nethereum.Signer;
 
 namespace Lykke.Quintessence.Core.Blockchain.Strategies
 {
+    [UsedImplicitly]
     public class BuildEip155TransactionStrategy : IBuildRawTransactionStrategy
     {
         private readonly BigInteger _chainId;

@@ -24,7 +24,7 @@ namespace Lykke.Quintessence.Core.Blockchain
         {
             var privateKey = _keyGenerator.GeneratePrivateKey();
             var publicKey = _keyGenerator.GeneratePublicKey(privateKey);
-            var address = (await _hashCalculator.SumAsync(publicKey.Slice(1))).Slice(12, 32);
+            var address = (await _hashCalculator.SumAsync(publicKey)).Slice(12, 32);
 
             return (address.ToHexString(), privateKey.ToHexString());
         }

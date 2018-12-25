@@ -11,7 +11,7 @@ namespace Lykke.BilService.SampleSignService.Modules
             ContainerBuilder builder)
         {
             builder
-                .UseChainId(0);
+                .UseChainId(3);
         }
     }
 }
