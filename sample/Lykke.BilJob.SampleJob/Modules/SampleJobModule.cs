@@ -15,7 +15,7 @@ namespace Lykke.BilJob.SampleJob.Modules
                 .UseAITelemetryConsumer();
             
             builder
-                .RegisterInstance(new ChainId(0))
+                .RegisterInstance(new ChainId(3))
                 .As<IChainId>();
         }
     }

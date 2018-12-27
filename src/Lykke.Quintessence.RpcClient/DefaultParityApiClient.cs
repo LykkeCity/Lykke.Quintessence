@@ -46,14 +46,16 @@ namespace Lykke.Quintessence.RpcClient
         private static TransactionTrace GetTransactionTrace(
             JToken jToken)
         {
+            var action = jToken.SelectToken("action");
+            
             return new TransactionTrace
             (
                 action: new TransactionTrace.TransactionAction
                 (
-                    callType: jToken.SelectToken("action.callType").Value<string>(),
-                    from: jToken.SelectToken("action.from").Value<string>(),
-                    to: jToken.SelectToken("action.to").Value<string>(),
-                    value: jToken.SelectToken("action.value").Value<string>().HexToBigInteger()
+                    callType: action.Value<string>("callType"),
+                    from: action.Value<string>("from"),
+                    to: action.Value<string>("to"),
+                    value: action.Value<string>("value").HexToBigInteger()
                 ),
                 blockHash: jToken.Value<string>("blockHash"),
                 blockNumber: jToken.Value<string>("blockNumber").HexToBigInteger(),
