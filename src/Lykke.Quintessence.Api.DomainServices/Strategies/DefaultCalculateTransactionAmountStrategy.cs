@@ -39,7 +39,7 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
                 return TransactionAmountCalculationResult.BalanceIsNotEnough();
             }
             
-            return TransactionAmountCalculationResult.TransactionAmount(transferAmount);
+            return TransactionAmountCalculationResult.TransactionAmount(transactionAmount);
         }
     }
 }
