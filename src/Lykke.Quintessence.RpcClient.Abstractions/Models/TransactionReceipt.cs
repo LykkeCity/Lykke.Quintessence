@@ -9,7 +9,7 @@ namespace Lykke.Quintessence.RpcClient.Models
     {
         public TransactionReceipt(
             string blockHash,
-            BigInteger blockNumber,
+            BigInteger? blockNumber,
             string contractAddress,
             BigInteger cumulativeGasUsed,
             BigInteger gasUsed,
@@ -35,7 +35,7 @@ namespace Lykke.Quintessence.RpcClient.Models
         /// <summary>
         ///    Block number where this transaction was included.
         /// </summary>
-        public BigInteger BlockNumber { get; }
+        public BigInteger? BlockNumber { get; }
 
         /// <summary>
         ///    The contract address created, if the transaction was a contract creation, otherwise null.

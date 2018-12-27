@@ -156,7 +156,34 @@ namespace Lykke.Quintessence.Domain.Services
         {
             var transactionReceipt = await _apiClient.GetTransactionReceiptAsync(hash);
 
-            if (transactionReceipt == null)
+            if (transactionReceipt?.BlockHash != null && transactionReceipt.BlockNumber != null)
+            {
+                var blockNumber = transactionReceipt.BlockNumber.Value;
+                
+                switch ((int)transactionReceipt.Status)
+                {
+                    case 0:
+                        return new TransactionResult
+                        (
+                            blockNumber: blockNumber,
+                            error: "Transaction failed",
+                            isCompleted: true,
+                            isFailed: true
+                        );
+                    case 1:
+                        return new TransactionResult
+                        (
+                    
+                            blockNumber: blockNumber,
+                            error: null,
+                            isCompleted: true,
+                            isFailed: false
+                        );
+                    default:
+                        throw new Exception($"Transaction [{hash}] has unexpected [{transactionReceipt.Status}] status.");
+                }
+            }
+            else
             {
                 return new TransactionResult
                 (
@@ -165,30 +192,6 @@ namespace Lykke.Quintessence.Domain.Services
                     isCompleted: false,
                     isFailed: false
                 );
-            }
-            else if (transactionReceipt.Status == 1)
-            {
-                return new TransactionResult
-                (
-                    blockNumber: transactionReceipt.BlockNumber,
-                    error: null,
-                    isCompleted: true,
-                    isFailed: false
-                );
-            }
-            else if (transactionReceipt.Status == 0)
-            {
-                return new TransactionResult
-                (
-                    blockNumber: transactionReceipt.BlockNumber,
-                    error: "Transaction failed",
-                    isCompleted: true,
-                    isFailed: true
-                );
-            }
-            else
-            {
-                throw new Exception($"Transaction [{hash}] neither in progress, nor completed.");
             }
         }
 

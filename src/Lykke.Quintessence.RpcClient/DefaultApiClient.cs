@@ -154,25 +154,22 @@ namespace Lykke.Quintessence.RpcClient
 
             if (response.Result.Type != JTokenType.Null)
             {
-                var blockHash = response.ResultValue<string>("blockHash");
-
-                if (blockHash != null)
-                {
-                    return new TransactionReceipt
-                    (
-                        blockHash: blockHash,
-                        blockNumber: response.ResultValue<BigInteger>("blockNumber"),
-                        contractAddress: response.ResultValue<string>("contractAddress"),
-                        cumulativeGasUsed: response.ResultValue<BigInteger>("cumulativeGasUsed"),
-                        gasUsed: response.ResultValue<BigInteger>("gasUsed"),
-                        status: response.ResultValue<BigInteger>("status"),
-                        transactionIndex: response.ResultValue<BigInteger>("transactionIndex"),
-                        transactionHash: response.ResultValue<string>("transactionHash")
-                    );
-                }
+                return new TransactionReceipt
+                (
+                    blockHash: response.ResultValue<string>("blockHash"),
+                    blockNumber: response.ResultValue<BigInteger?>("blockNumber"),
+                    contractAddress: response.ResultValue<string>("contractAddress"),
+                    cumulativeGasUsed: response.ResultValue<BigInteger>("cumulativeGasUsed"),
+                    gasUsed: response.ResultValue<BigInteger>("gasUsed"),
+                    status: response.ResultValue<BigInteger>("status"),
+                    transactionIndex: response.ResultValue<BigInteger>("transactionIndex"),
+                    transactionHash: response.ResultValue<string>("transactionHash")
+                );
             }
-            
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         /// <inheritdoc />
