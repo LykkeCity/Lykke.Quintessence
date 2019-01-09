@@ -51,7 +51,8 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
             registrant
                 .Builder
                 .UseDefaultDetectContractStrategy()
-                .UseDefaultGetTransactionReceiptsStrategy();
+                .UseDefaultGetTransactionReceiptsStrategy()
+                .UseDefaultTryGetTransactionErrorStrategy();
 
             registrant
                 .AddDefaultNonceService();
@@ -72,6 +73,7 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
                         ctx.Resolve<IApiClient>(),
                         ctx.Resolve<IGetTransactionReceiptsStrategy>(),
                         ctx.Resolve<INonceService>(),
+                        ctx.Resolve<ITryGetTransactionErrorStrategy>(),
                         settings   
                     )
                 )

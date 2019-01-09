@@ -74,5 +74,15 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
             
             return builder;
         }
+
+        internal static ContainerBuilder UseDefaultTryGetTransactionErrorStrategy(
+            this ContainerBuilder builder)
+        {
+            builder
+                .RegisterIfNotRegistered<ITryGetTransactionErrorStrategy, DefaultTryGetTransactionErrorStrategy>()
+                .SingleInstance();
+
+            return builder;
+        }
     }
 }

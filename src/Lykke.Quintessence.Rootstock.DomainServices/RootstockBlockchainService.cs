@@ -20,7 +20,7 @@ namespace Lykke.Quintessence.Domain.Services
             IRootstockNonceService nonceService,
             Settings settings) 
             
-            : base(detectContractStrategy, apiClient, getTransactionReceiptsStrategy, nonceService, settings)
+            : base(detectContractStrategy, apiClient, getTransactionReceiptsStrategy, nonceService, null, settings)
         {
             _apiClient = apiClient;
             _nonceService = nonceService;

@@ -13,7 +13,7 @@ namespace Lykke.Quintessence.RpcClient.Models
             string contractAddress,
             BigInteger cumulativeGasUsed,
             BigInteger gasUsed,
-            BigInteger status,
+            BigInteger? status,
             BigInteger transactionIndex,
             string transactionHash)
         {
@@ -53,9 +53,9 @@ namespace Lykke.Quintessence.RpcClient.Models
         public BigInteger GasUsed { get; }
 
         /// <summary>
-        ///    Transaction Success 1, Transaction Failed 0
+        ///    Transaction Success 1, Transaction Failed 0, null is status is not supported
         /// </summary>
-        public BigInteger Status { get; }
+        public BigInteger? Status { get; }
 
         /// <summary>
         ///    Integer of the transactions index position in the block.

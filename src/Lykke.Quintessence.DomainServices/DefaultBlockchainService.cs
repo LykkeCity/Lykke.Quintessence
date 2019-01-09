@@ -25,6 +25,7 @@ namespace Lykke.Quintessence.Domain.Services
         private readonly SettingManager<string, (BigInteger, BigInteger)> _gasPriceRange;
         private readonly IGetTransactionReceiptsStrategy _getTransactionReceiptsStrategy;
         private readonly INonceService _nonceService;
+        private readonly ITryGetTransactionErrorStrategy _tryGetTransactionErrorStrategy;
 
         
         public DefaultBlockchainService(
@@ -32,12 +33,15 @@ namespace Lykke.Quintessence.Domain.Services
             IApiClient apiClient,
             IGetTransactionReceiptsStrategy getTransactionReceiptsStrategy,
             INonceService nonceService,
+            ITryGetTransactionErrorStrategy tryGetTransactionErrorStrategy,
             Settings settings)
         {
             _detectContractStrategy = detectContractStrategy;
             _apiClient = apiClient;
             _getTransactionReceiptsStrategy = getTransactionReceiptsStrategy;
             _nonceService = nonceService;
+            _tryGetTransactionErrorStrategy = tryGetTransactionErrorStrategy;
+            
          
             _confirmationLevel = new SettingManager<int>
             (
@@ -159,29 +163,15 @@ namespace Lykke.Quintessence.Domain.Services
             if (transactionReceipt?.BlockHash != null && transactionReceipt.BlockNumber != null)
             {
                 var blockNumber = transactionReceipt.BlockNumber.Value;
+                var error = await _tryGetTransactionErrorStrategy.ExecuteAsync(transactionReceipt.Status, hash);
                 
-                switch ((int)transactionReceipt.Status)
-                {
-                    case 0:
-                        return new TransactionResult
-                        (
-                            blockNumber: blockNumber,
-                            error: "Transaction failed",
-                            isCompleted: true,
-                            isFailed: true
-                        );
-                    case 1:
-                        return new TransactionResult
-                        (
-                    
-                            blockNumber: blockNumber,
-                            error: null,
-                            isCompleted: true,
-                            isFailed: false
-                        );
-                    default:
-                        throw new Exception($"Transaction [{hash}] has unexpected [{transactionReceipt.Status}] status.");
-                }
+                return new TransactionResult
+                (
+                    blockNumber: blockNumber,
+                    error: error,
+                    isCompleted: true,
+                    isFailed: !string.IsNullOrEmpty(error)
+                );
             }
             else
             {

@@ -161,7 +161,7 @@ namespace Lykke.Quintessence.RpcClient
                     contractAddress: response.ResultValue<string>("contractAddress"),
                     cumulativeGasUsed: response.ResultValue<BigInteger>("cumulativeGasUsed"),
                     gasUsed: response.ResultValue<BigInteger>("gasUsed"),
-                    status: response.ResultValue<BigInteger>("status"),
+                    status: response.ResultValue<BigInteger?>("status"),
                     transactionIndex: response.ResultValue<BigInteger>("transactionIndex"),
                     transactionHash: response.ResultValue<string>("transactionHash")
                 );
