@@ -8,7 +8,7 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
         public bool Execute(
             string code)
         {
-            return code == "0x00";
+            return code != "0x00";
         }
     }
 }

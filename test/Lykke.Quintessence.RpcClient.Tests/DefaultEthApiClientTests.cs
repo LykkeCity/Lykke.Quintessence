@@ -167,9 +167,9 @@ namespace Lykke.Quintessence.RpcClient
         }
 
         [TestMethod]
-        public async Task GetTransactionReceiptAsync()
+        public async Task GetTransactionReceiptAsync__Parity()
         {
-            var response = await GetClient("eth_getTransactionReceipt.json")
+            var response = await GetClient("eth_getTransactionReceipt.json", "eth_getTransactionReceipt/parity.json")
                 .GetTransactionReceiptAsync("0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238");
             
             var expectedTransactionReceipt = new TransactionReceipt
@@ -181,6 +181,29 @@ namespace Lykke.Quintessence.RpcClient
                 gasUsed: 1244,
                 status: 1,
                 transactionIndex: 1,
+                transactionHash: "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
+            );
+            
+            response
+                .Should()
+                .BeEquivalentTo(expectedTransactionReceipt);
+        }
+        
+        [TestMethod]
+        public async Task GetTransactionReceiptAsync__RSKJ()
+        {
+            var response = await GetClient("eth_getTransactionReceipt.json", "eth_getTransactionReceipt/rskj.json")
+                .GetTransactionReceiptAsync("0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238");
+            
+            var expectedTransactionReceipt = new TransactionReceipt
+            (
+                blockHash: "0x93a626d7b09c34abca7c6bc82961a2462b2304a89c35ec8c9617da6fdafcaafa",
+                blockNumber: 246058,
+                contractAddress: null,
+                cumulativeGasUsed: 105000,
+                gasUsed: 21000,
+                status: 1,
+                transactionIndex: 4,
                 transactionHash: "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
             );
             

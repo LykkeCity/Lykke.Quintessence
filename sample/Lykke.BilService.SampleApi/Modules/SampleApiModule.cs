@@ -15,7 +15,7 @@ namespace Lykke.BilService.SampleApi.Modules
         {
             builder
                 .UseAITelemetryConsumer()
-                .UseChainId(0)
+                .UseChainId(3)
                 .UseAssetService<SampleAssetService>();
         }
     }

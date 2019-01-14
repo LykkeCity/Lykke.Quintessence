@@ -2,10 +2,12 @@ using System;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Lykke.Quintessence.RpcClient;
 
 namespace Lykke.Quintessence.Domain.Services.Strategies
 {
+    [UsedImplicitly]
     public class DefaultTryGetTransactionErrorStrategy : ITryGetTransactionErrorStrategy
     {
         private readonly IParityApiClient _parityApiClient;
