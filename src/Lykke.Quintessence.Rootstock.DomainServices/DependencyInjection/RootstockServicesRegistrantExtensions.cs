@@ -15,7 +15,8 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
             registrant
                 .Builder
                 .UseRootstockDetectContractStrategy()
-                .UseRootstockGetTransactionReceiptsStrategy();
+                .UseRootstockGetTransactionReceiptsStrategy()
+                .UseRootstockTryGetTransactionErrorStrategy();
             
             registrant
                 .AddRootstockNonceService();
@@ -36,6 +37,7 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
                         ctx.Resolve<IApiClient>(),
                         ctx.Resolve<IGetTransactionReceiptsStrategy>(),
                         ctx.Resolve<IRootstockNonceService>(),
+                        ctx.Resolve<ITryGetTransactionErrorStrategy>(),
                         settings
                     )
                 )

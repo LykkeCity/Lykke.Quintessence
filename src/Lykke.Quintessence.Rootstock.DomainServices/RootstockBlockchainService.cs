@@ -18,9 +18,10 @@ namespace Lykke.Quintessence.Domain.Services
             IApiClient apiClient,
             IGetTransactionReceiptsStrategy getTransactionReceiptsStrategy,
             IRootstockNonceService nonceService,
+            ITryGetTransactionErrorStrategy tryGetTransactionErrorStrategy,
             Settings settings) 
             
-            : base(detectContractStrategy, apiClient, getTransactionReceiptsStrategy, nonceService, null, settings)
+            : base(detectContractStrategy, apiClient, getTransactionReceiptsStrategy, nonceService, tryGetTransactionErrorStrategy, settings)
         {
             _apiClient = apiClient;
             _nonceService = nonceService;
