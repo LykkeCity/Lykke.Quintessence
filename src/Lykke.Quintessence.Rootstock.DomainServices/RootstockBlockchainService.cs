@@ -35,18 +35,21 @@ namespace Lykke.Quintessence.Domain.Services
             {
                 return transaction.Hash;
             }
-            
-            await _apiClient.SendRawTransactionAsync(transaction.Data);
-                
-            for (var i = 0; i < 60; i++)
+
+            for (var i = 0; i < 3; i++)
             {
-                if (await _apiClient.GetTransactionAsync(transaction.Hash) != null)
+                await _apiClient.SendRawTransactionAsync(transaction.Data);
+                
+                for (var ii = 0; ii < 10; ii++)
                 {
-                    return transaction.Hash;
-                }
-                else
-                {
-                    await Task.Delay(1000);
+                    if (await _apiClient.GetTransactionAsync(transaction.Hash) != null)
+                    {
+                        return transaction.Hash;
+                    }
+                    else
+                    {
+                        await Task.Delay(1000);
+                    }
                 }
             }
                 
