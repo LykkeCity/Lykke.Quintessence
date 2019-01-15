@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Lykke.Quintessence.RpcClient.Exceptions;
 using Lykke.Quintessence.RpcClient.Models;
@@ -24,6 +25,13 @@ namespace Lykke.Quintessence.RpcClient
             var requestJson = JsonConvert.SerializeObject(request);
             var responseJson = await _sendRpcRequestStrategy.ExecuteAsync(requestJson);
             var response = JsonConvert.DeserializeObject<RpcResponse>(responseJson);
+
+            if (request.Method == "eth_sendRawTransaction")
+            {
+                Console.WriteLine(requestJson);
+                
+                Console.WriteLine(responseJson);
+            }
             
             if (response.Error != null)
             {
