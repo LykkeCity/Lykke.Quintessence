@@ -156,10 +156,21 @@ namespace Lykke.Quintessence.RpcClient
         }
 
         [TestMethod]
-        public async Task GetTransactionCountAsync()
+        public async Task GetTransactionCountAsync__Include_Pending()
+        {
+            var response = await GetClient("eth_getTransactionCount/pending.json", "eth_getTransactionCount.json")
+                .GetTransactionCountAsync("0xc94770007dda54cF92009BFF0dE90c06F603a09f", true);
+
+            response
+                .Should()
+                .Be(1);
+        }
+        
+        [TestMethod]
+        public async Task GetTransactionCountAsync__Not_Include_Pending()
         {
             var response = await GetClient("eth_getTransactionCount.json")
-                .GetTransactionCountAsync("0xc94770007dda54cF92009BFF0dE90c06F603a09f");
+                .GetTransactionCountAsync("0xc94770007dda54cF92009BFF0dE90c06F603a09f", false);
 
             response
                 .Should()

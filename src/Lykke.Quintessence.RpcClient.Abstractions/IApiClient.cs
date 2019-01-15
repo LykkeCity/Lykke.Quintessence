@@ -66,7 +66,8 @@ namespace Lykke.Quintessence.RpcClient
             string transactionHash);
 
         Task<BigInteger> GetTransactionCountAsync(
-            string address);
+            string address,
+            bool includePendingTransactions);
 
         Task<TransactionReceipt> GetTransactionReceiptAsync(
             string transactionHash);

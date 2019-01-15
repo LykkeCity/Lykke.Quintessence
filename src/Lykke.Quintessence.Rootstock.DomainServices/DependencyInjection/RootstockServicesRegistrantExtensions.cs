@@ -36,7 +36,7 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
                         ctx.Resolve<IDetectContractStrategy>(),
                         ctx.Resolve<IApiClient>(),
                         ctx.Resolve<IGetTransactionReceiptsStrategy>(),
-                        ctx.Resolve<IRootstockNonceService>(),
+                        ctx.Resolve<INonceService>(),
                         ctx.Resolve<ITryGetTransactionErrorStrategy>(),
                         settings
                     )
@@ -56,11 +56,9 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
                 (
                     ctx => new RootstockNonceService
                     (
-                        ctx.Resolve<IApiClient>(),
-                        ctx.Resolve<IRootstockNonceRepository>()
+                        ctx.Resolve<IApiClient>()
                     )
                 )
-                .As<IRootstockNonceService>()
                 .As<INonceService>()
                 .SingleInstance();
 

@@ -11,20 +11,18 @@ namespace Lykke.Quintessence.Domain.Services
     public class RootstockBlockchainService : DefaultBlockchainService
     {
         private readonly IApiClient _apiClient;
-        private readonly IRootstockNonceService _nonceService;
         
         public RootstockBlockchainService(
             IDetectContractStrategy detectContractStrategy,
             IApiClient apiClient,
             IGetTransactionReceiptsStrategy getTransactionReceiptsStrategy,
-            IRootstockNonceService nonceService,
+            INonceService nonceService,
             ITryGetTransactionErrorStrategy tryGetTransactionErrorStrategy,
             Settings settings) 
             
             : base(detectContractStrategy, apiClient, getTransactionReceiptsStrategy, nonceService, tryGetTransactionErrorStrategy, settings)
         {
             _apiClient = apiClient;
-            _nonceService = nonceService;
         }
 
         public override async Task<string> BroadcastTransactionAsync(
@@ -44,8 +42,6 @@ namespace Lykke.Quintessence.Domain.Services
             {
                 if (await _apiClient.GetTransactionAsync(transaction.Hash) != null)
                 {
-                    await _nonceService.IncreaseNonceAsync(transaction.From);
-                    
                     return transaction.Hash;
                 }
                 else

@@ -19,6 +19,7 @@ namespace Lykke.Quintessence.RpcClient
     public class DefaultApiClient : ApiClientBase, IApiClient
     {
         protected const string BestBlockIdentifier = "latest";
+        protected const string PendingBlockIdentifier = "pending";
         
         public DefaultApiClient(
             ISendRpcRequestStrategy sendRpcRequestStrategy)
@@ -135,9 +136,11 @@ namespace Lykke.Quintessence.RpcClient
 
         /// <inheritdoc />
         public async Task<BigInteger> GetTransactionCountAsync(
-            string address)
+            string address,
+            bool includePendingTransactions)
         {
-            var requestParams = new object[] { address, BestBlockIdentifier };
+            var blockIdentifier = includePendingTransactions ? PendingBlockIdentifier : BestBlockIdentifier;
+            var requestParams = new object[] { address, blockIdentifier };
             var request = new RpcRequest("eth_getTransactionCount", requestParams);
             var response = await SendRpcRequestAsync(request);
             
