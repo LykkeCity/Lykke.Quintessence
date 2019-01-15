@@ -38,7 +38,7 @@ namespace Lykke.Quintessence.Domain.Services
             
             await _apiClient.SendRawTransactionAsync(transaction.Data);
                 
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 60; i++)
             {
                 if (await _apiClient.GetTransactionAsync(transaction.Hash) != null)
                 {
