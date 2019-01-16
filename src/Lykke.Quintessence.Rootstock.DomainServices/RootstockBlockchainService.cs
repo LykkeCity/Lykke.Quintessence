@@ -36,47 +36,52 @@ namespace Lykke.Quintessence.Domain.Services
                 return transaction.Hash;
             }
 
-            await _apiClient.SendRawTransactionAsync(transaction.Data);
+
+            var transactionHasBeenBroadcasted = false;
             
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 30; i++)
             {
-                if (await _apiClient.GetTransactionAsync(transaction.Hash) != null)
+                var pendingTransactionsCount = await _apiClient.GetTransactionCountAsync(transaction.From, true) -
+                                               await _apiClient.GetTransactionCountAsync(transaction.From, false);
+
+                if (pendingTransactionsCount < 4)
                 {
-                    await Task.Delay(30 * 1000);
+                    await _apiClient.SendRawTransactionAsync(transaction.Data);
                     
-                    return transaction.Hash;
+                    transactionHasBeenBroadcasted = true;
                 }
                 else
                 {
                     await Task.Delay(1000);
                 }
             }
-            
-            // Following workaround works
-            //
-            //for (var i = 0; i < 3; i++)
-            //{
-            //    await _apiClient.SendRawTransactionAsync(transaction.Data);
-            //    
-            //    for (var ii = 0; ii < 10; ii++)
-            //    {
-            //        if (await _apiClient.GetTransactionAsync(transaction.Hash) != null)
-            //        {
-            //            return transaction.Hash;
-            //        }
-            //        else
-            //        {
-            //            await Task.Delay(5000);
-            //        }
-            //    }
-            //
-            //    await Task.Delay(10 * 1000);
-            //}
-                
-            throw new Exception
-            (
-                $"Transaction [{transaction.Hash}] has been broadcasted, but did not appear in mempool in the specified period of time."
-            );
+
+            if (transactionHasBeenBroadcasted)
+            {
+                for (var i = 0; i < 10; i++)
+                {
+                    if (await _apiClient.GetTransactionAsync(transaction.Hash) != null)
+                    {
+                        return transaction.Hash;
+                    }
+                    else
+                    {
+                        await Task.Delay(1000);
+                    }
+                }
+             
+                throw new Exception
+                (
+                    $"Transaction [{transaction.Hash}] has been broadcasted, but did not appear in mempool in the specified period of time."
+                );
+            }
+            else
+            {
+                throw new Exception
+                (
+                    $"Transaction [{transaction.Hash}] has not been broadcasted."
+                );
+            }
         }
     }
 }
