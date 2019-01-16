@@ -51,6 +51,8 @@ namespace Lykke.Quintessence.Domain.Services
                         await Task.Delay(1000);
                     }
                 }
+
+                await Task.Delay(10 * 1000);
             }
                 
             throw new Exception
