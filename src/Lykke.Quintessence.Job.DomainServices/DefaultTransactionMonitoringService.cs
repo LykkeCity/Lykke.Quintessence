@@ -39,33 +39,52 @@ namespace Lykke.Quintessence.Domain.Services
                 if (transaction?.State == TransactionState.InProgress)
                 {
                     var transactionResult = await _blockchainService.GetTransactionResultAsync(transaction.Hash);
-
-                    // TODO: Act somehow, if transactionResult is null (it means, that transaction suddenly disappeared)
-                    // ReSharper disable once PossibleNullReferenceException
-                    if (transactionResult.IsCompleted)
+                    
+                    if (transactionResult != null)
                     {
-                        if (!transactionResult.IsFailed)
+                        var bestTrustedBlockNumber = await _blockchainService.GetBestTrustedBlockNumberAsync();
+                        
+                        if (transactionResult.IsCompleted && transactionResult.BlockNumber <= bestTrustedBlockNumber)
                         {
-                            transaction.OnSucceeded
-                            (
-                                transactionResult.BlockNumber
-                            );
+                            if (!transactionResult.IsFailed)
+                            {
+                                transaction.OnSucceeded
+                                (
+                                    transactionResult.BlockNumber
+                                );
+                            }
+                            else
+                            {
+                                transaction.OnFailed
+                                (
+                                    transactionResult.BlockNumber,
+                                    transactionResult.Error
+                                );
+                            }
+
+                            await _transactionRepository.UpdateAsync(transaction);
+                            
+                            LogTransactionResult(task.TransactionId, transactionResult);
+
+                            return true;
                         }
                         else
                         {
-                            transaction.OnFailed
-                            (
-                                transactionResult.BlockNumber,
-                                transactionResult.Error
-                            );
+                            return false;
                         }
-
-                        await _transactionRepository.UpdateAsync(transaction);
                     }
-                    
-                    LogTransactionResult(task.TransactionId, transactionResult);
+                    else
+                    {
+                        transaction.OnFailed
+                        (
+                            0,
+                            "Transaction suddenly disappeared."
+                        );
+                        
+                        _log.Warning($"Transaction [{task.TransactionId}] suddenly disappeared.");
 
-                    return transactionResult.IsCompleted;
+                        return true;
+                    }
                 }
                 else
                 {

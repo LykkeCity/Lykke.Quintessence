@@ -175,13 +175,7 @@ namespace Lykke.Quintessence.Domain.Services
             }
             else
             {
-                return new TransactionResult
-                (
-                    blockNumber: 0,
-                    error: null,
-                    isCompleted: false,
-                    isFailed: false
-                );
+                return null;
             }
         }
 
