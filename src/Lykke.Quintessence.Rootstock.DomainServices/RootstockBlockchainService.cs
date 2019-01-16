@@ -36,24 +36,42 @@ namespace Lykke.Quintessence.Domain.Services
                 return transaction.Hash;
             }
 
-            for (var i = 0; i < 3; i++)
+            await _apiClient.SendRawTransactionAsync(transaction.Data);
+            
+            for (var i = 0; i < 10; i++)
             {
-                await _apiClient.SendRawTransactionAsync(transaction.Data);
-                
-                for (var ii = 0; ii < 10; ii++)
+                if (await _apiClient.GetTransactionAsync(transaction.Hash) != null)
                 {
-                    if (await _apiClient.GetTransactionAsync(transaction.Hash) != null)
-                    {
-                        return transaction.Hash;
-                    }
-                    else
-                    {
-                        await Task.Delay(5000);
-                    }
+                    await Task.Delay(30 * 1000);
+                    
+                    return transaction.Hash;
                 }
-
-                await Task.Delay(10 * 1000);
+                else
+                {
+                    await Task.Delay(1000);
+                }
             }
+            
+            // Following workaround works
+            //
+            //for (var i = 0; i < 3; i++)
+            //{
+            //    await _apiClient.SendRawTransactionAsync(transaction.Data);
+            //    
+            //    for (var ii = 0; ii < 10; ii++)
+            //    {
+            //        if (await _apiClient.GetTransactionAsync(transaction.Hash) != null)
+            //        {
+            //            return transaction.Hash;
+            //        }
+            //        else
+            //        {
+            //            await Task.Delay(5000);
+            //        }
+            //    }
+            //
+            //    await Task.Delay(10 * 1000);
+            //}
                 
             throw new Exception
             (

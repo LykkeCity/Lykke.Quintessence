@@ -114,12 +114,15 @@ namespace Lykke.Quintessence
                 extendedLogs.AddAdditionalSlackChannel("BlockChainIntegration", channelOptions =>
                 {
                     channelOptions.MinLogLevel = LogLevel.Information;
+                    channelOptions.SpamGuard.DisableGuarding();
+                    channelOptions.IncludeHealthNotifications();
                 });
                         
                 extendedLogs.AddAdditionalSlackChannel("BlockChainIntegrationImportantMessages", channelOptions =>
                 {
                     channelOptions.MinLogLevel = LogLevel.Warning;
                     channelOptions.SpamGuard.DisableGuarding();
+                    channelOptions.IncludeHealthNotifications();
                 });
             };
         }

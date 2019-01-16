@@ -68,10 +68,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Quintessence.DomainSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Quintessence.Rootstock.DomainServices", "src\Lykke.Quintessence.Rootstock.DomainServices\Lykke.Quintessence.Rootstock.DomainServices.csproj", "{610BD3DE-F4F1-46B4-A130-1D6785F8CCC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Quintessence.Rootstock.Domain", "src\Lykke.Quintessence.Rootstock.Domain\Lykke.Quintessence.Rootstock.Domain.csproj", "{A906E26E-7C75-4D45-9AD7-BE98A9348F03}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Quintessence.Rootstock.AzureRepositories", "src\Lykke.Quintessence.Rootstock.AzureRepositories\Lykke.Quintessence.Rootstock.AzureRepositories.csproj", "{FC0FBB10-9F88-4B3C-9DDE-77ABC6E871C6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Quintessence.Rootstock", "src\Lykke.Quintessence.Rootstock\Lykke.Quintessence.Rootstock.csproj", "{E864C044-F8F2-489A-8D31-BE98116BC5A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Quintessence.RpcClient.Tests", "test\Lykke.Quintessence.RpcClient.Tests\Lykke.Quintessence.RpcClient.Tests.csproj", "{14B41F71-28A3-4394-B150-351829B220CE}"
@@ -178,14 +174,6 @@ Global
 		{610BD3DE-F4F1-46B4-A130-1D6785F8CCC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{610BD3DE-F4F1-46B4-A130-1D6785F8CCC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{610BD3DE-F4F1-46B4-A130-1D6785F8CCC5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A906E26E-7C75-4D45-9AD7-BE98A9348F03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A906E26E-7C75-4D45-9AD7-BE98A9348F03}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A906E26E-7C75-4D45-9AD7-BE98A9348F03}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A906E26E-7C75-4D45-9AD7-BE98A9348F03}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC0FBB10-9F88-4B3C-9DDE-77ABC6E871C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC0FBB10-9F88-4B3C-9DDE-77ABC6E871C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC0FBB10-9F88-4B3C-9DDE-77ABC6E871C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC0FBB10-9F88-4B3C-9DDE-77ABC6E871C6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E864C044-F8F2-489A-8D31-BE98116BC5A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E864C044-F8F2-489A-8D31-BE98116BC5A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E864C044-F8F2-489A-8D31-BE98116BC5A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -227,8 +215,6 @@ Global
 		{8B2D3E14-B2BA-49E9-8575-9CBFDFDBA597} = {B8F1C868-CC0C-4DA6-970D-94FA7F77FCB7}
 		{44F0280F-0243-44A5-BB3E-66848B52F356} = {F2D2B602-E10B-46DF-938D-5F12DF52DDB8}
 		{610BD3DE-F4F1-46B4-A130-1D6785F8CCC5} = {F597E3A5-A96C-48B6-866C-BB8E61631720}
-		{A906E26E-7C75-4D45-9AD7-BE98A9348F03} = {F597E3A5-A96C-48B6-866C-BB8E61631720}
-		{FC0FBB10-9F88-4B3C-9DDE-77ABC6E871C6} = {F597E3A5-A96C-48B6-866C-BB8E61631720}
 		{E864C044-F8F2-489A-8D31-BE98116BC5A3} = {F597E3A5-A96C-48B6-866C-BB8E61631720}
 		{14B41F71-28A3-4394-B150-351829B220CE} = {F2D2B602-E10B-46DF-938D-5F12DF52DDB8}
 	EndGlobalSection
