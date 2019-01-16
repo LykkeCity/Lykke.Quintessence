@@ -48,7 +48,7 @@ namespace Lykke.Quintessence.Domain.Services
                     }
                     else
                     {
-                        await Task.Delay(1000);
+                        await Task.Delay(5000);
                     }
                 }
 
