@@ -20,10 +20,9 @@ namespace Lykke.Quintessence.DependencyInjection
             builder
                 .UseChainId(chainId)
                 .UseRootstockAddChecksumStrategy();
-            
+
             builder
-                .UseAzureRepositories(connectionString)
-                .AddRootstockNonceRepository();
+                .UseAzureRepositories(connectionString);
 
             builder
                 .RegisterRootstockServices

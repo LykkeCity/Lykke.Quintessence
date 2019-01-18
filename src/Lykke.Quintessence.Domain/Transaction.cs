@@ -5,7 +5,7 @@ namespace Lykke.Quintessence.Domain
 {
     public class Transaction
     {
-        public Transaction(
+        private Transaction(
             BigInteger amount,
             DateTime builtOn,
             string data,
@@ -82,7 +82,7 @@ namespace Lykke.Quintessence.Domain
                 amount: amount,
                 builtOn: DateTime.UtcNow,
                 data: data,
-                @from: from,
+                from: from,
                 gasAmount: gasAmount,
                 gasPrice: gasPrice,
                 includeFee: includeFee,
@@ -103,6 +103,8 @@ namespace Lykke.Quintessence.Domain
         
         public DateTime? CompletedOn { get; private set; }
         
+        public DateTime? ConfirmedOn { get; private set; }
+        
         public string Data { get; }
         
         public DateTime? DeletedOn { get; private set; }
@@ -118,6 +120,8 @@ namespace Lykke.Quintessence.Domain
         public string Hash { get; private set; }
         
         public bool IncludeFee { get; }
+        
+        public BigInteger? Nonce { get; private set; }
         
         public string SignedData { get; private set; }
         
@@ -148,6 +152,16 @@ namespace Lykke.Quintessence.Domain
             }
         }
 
+        public void OnCompleted()
+        {
+            
+        }
+
+        public void OnConfirmed()
+        {
+            
+        }
+        
         public void OnDeleted()
         {
             if (State != TransactionState.Deleted)
