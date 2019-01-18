@@ -8,7 +8,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\Lykke.Quintessence.Runtime\Lykke.Quintessence.Runtime.csproj" />
-        <ProjectReference Include="..\Lykke.Quintessence.Rootstock.Domain\Lykke.Quintessence.Rootstock.Domain.csproj" />
     </ItemGroup>
 
 </Project>
