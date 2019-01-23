@@ -61,7 +61,7 @@ namespace Lykke.Quintessence.Domain.Repositories.Entities
                 => _broadcastedOn;
             set
             {
-                if (_broadcastedOn != null)
+                if (_broadcastedOn != value)
                 {
                     _broadcastedOn = value;
                     

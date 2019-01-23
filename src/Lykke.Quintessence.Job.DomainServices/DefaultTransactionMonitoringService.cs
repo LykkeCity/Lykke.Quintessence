@@ -36,99 +36,52 @@ namespace Lykke.Quintessence.Domain.Services
             {
                 var transaction = await _transactionRepository.TryGetAsync(task.TransactionId);
 
-                if (transaction == null)
+                if (transaction != null)
+                {
+                    var initialTransactionState = transaction.State;
+                    
+                    // ReSharper disable once ConvertIfStatementToSwitchStatement
+                    if (transaction.State == TransactionState.InProgress)
+                    {
+                        await CheckTransactionCompletionStateAsync(transaction);
+                    }
+
+                    if (transaction.State == TransactionState.Completed || transaction.State == TransactionState.Failed)
+                    {
+                        await CheckTransactionConfirmationStateAsync(transaction);
+                    }
+
+                    if (transaction.State != initialTransactionState)
+                    {
+                        await _transactionRepository.UpdateAsync(transaction);
+                    }
+
+                    // ReSharper disable once SwitchStatementMissingSomeCases
+                    switch (transaction.State)
+                    {
+                        case TransactionState.Built:
+                            return true;
+                        
+                        case TransactionState.InProgress:
+                            return false;
+                        
+                        case TransactionState.Completed:
+                        case TransactionState.Failed:
+                            return transaction.IsConfirmed;
+                        
+                        case TransactionState.Deleted:
+                            return true;
+                        
+                        default:
+                            throw new ArgumentException($"Transaction is in unknown state [{transaction.State}].");
+                    }
+                }
+                else
                 {
                     _log.Warning($"Transaction [{task.TransactionId}] does not exist.");
 
                     return true;
                 }
-                
-                if (transaction.State == TransactionState.Built || transaction.State == TransactionState.Deleted)
-                {
-                    // We should not check transaction state, until it has been broadcasted,
-                    // or if it has been marked as deleted
-                    
-                    return true;
-                }
-                
-                if (transaction.State == TransactionState.Completed || transaction.State == TransactionState.Failed)
-                {
-                    if (transaction.IsConfirmed)
-                    {
-                        // Transaction workflow has already been completed
-                        
-                        return true;
-                    }
-                    
-                    var transactionResult = await _blockchainService.GetTransactionResultAsync(transaction.Hash);
-
-                    if (transactionResult == null)
-                    {
-                        _log.Warning($"Transaction [{task.TransactionId}] disappeared, after if has been included in block.");
-
-                        return true;
-                    }
-                    
-                    var bestTrustedBlockNumber = await _blockchainService.GetBestTrustedBlockNumberAsync();
-
-                    if (transactionResult.BlockNumber <= bestTrustedBlockNumber)
-                    {
-                        transaction.OnConfirmed(await _blockchainService.GetConfirmationLevel());
-
-                        await _transactionRepository.UpdateAsync(transaction);
-                        
-                        _log.Info($"Transaction [{task.TransactionId}] has been confirmed.");
-                        
-                        return true;
-                    }
-                }
-
-                if (transaction.State == TransactionState.InProgress)
-                {
-                    var transactionResult = await _blockchainService.GetTransactionResultAsync(transaction.Hash);
-                    
-                    if (transactionResult == null)
-                    {
-                        transaction.OnFailed
-                        (
-                            0,
-                            "Transaction suddenly disappeared."
-                        );
-
-                        await _transactionRepository.UpdateAsync(transaction);
-                        
-                        _log.Warning($"Transaction [{task.TransactionId}] disappeared, after if has been broadcasted.");
-                        
-                        return true;
-                    }
-                    
-                    if (transactionResult.IsCompleted)
-                    {
-                        if (!transactionResult.IsFailed)
-                        {
-                            transaction.OnSucceeded
-                            (
-                                transactionResult.BlockNumber
-                            );
-                        }
-                        else
-                        {
-                            transaction.OnFailed
-                            (
-                                transactionResult.BlockNumber,
-                                transactionResult.Error
-                            );
-                        }
-
-                        await _transactionRepository.UpdateAsync(transaction);
-                            
-                        LogTransactionResult(task.TransactionId, transactionResult);
-
-                        return true;
-                    }
-                }
-                
-                return false;
             }
             catch (Exception e)
             {
@@ -168,23 +121,61 @@ namespace Lykke.Quintessence.Domain.Services
             }
         }
 
-        private void LogTransactionResult(
-            Guid transactionId,
-            TransactionResult transactionResult)
+        private async Task CheckTransactionCompletionStateAsync(
+            Transaction transaction)
         {
-            if (transactionResult.IsCompleted)
+            var transactionResult = await _blockchainService.GetTransactionResultAsync(transaction.Hash);
+                    
+            if (transactionResult != null)
             {
-                _log.Info
-                (
-                    !transactionResult.IsFailed
-                        ? $"Transaction [{transactionId}] succeeded in block {transactionResult.BlockNumber}."
-                        : $"Transaction [{transactionId}] failed in block {transactionResult.BlockNumber}.",
-                    new { transactionId }
-                );
+                if (transactionResult.IsCompleted)
+                {
+                    if (!transactionResult.IsFailed)
+                    {
+                        transaction.OnSucceeded
+                        (
+                            transactionResult.BlockNumber
+                        );
+                    }
+                    else
+                    {
+                        transaction.OnFailed
+                        (
+                            transactionResult.BlockNumber,
+                            transactionResult.Error
+                        );
+                    }
+                    
+                    _log.Info
+                    (
+                        !transactionResult.IsFailed
+                            ? $"Transaction [{transaction.TransactionId}] succeeded in block {transactionResult.BlockNumber}."
+                            : $"Transaction [{transaction.TransactionId}] failed in block {transactionResult.BlockNumber}.",
+                        new { transactionId = transaction.TransactionId }
+                    );
+                }
             }
             else
             {
-                _log.Debug($"Transaction [{transactionId}] is in progress.");
+                _log.Warning($"Transaction [{transaction.TransactionId}] disappeared, after if has been broadcasted.");
+            }
+        }
+
+        private async Task CheckTransactionConfirmationStateAsync(
+            Transaction transaction)
+        {
+            if (!transaction.IsConfirmed)
+            {
+                var bestTrustedBlockNumber = await _blockchainService.GetBestTrustedBlockNumberAsync();
+
+                if (transaction.BlockNumber <= bestTrustedBlockNumber)
+                {
+                    var confirmationLevel = await _blockchainService.GetConfirmationLevel();
+                    
+                    transaction.OnConfirmed(confirmationLevel);
+  
+                    _log.Info($"Transaction [{transaction.TransactionId}] has been confirmed.");
+                }
             }
         }
     }
