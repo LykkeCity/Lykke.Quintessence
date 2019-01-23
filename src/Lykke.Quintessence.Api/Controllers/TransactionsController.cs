@@ -150,31 +150,36 @@ namespace Lykke.Quintessence.Controllers
                     Hash = txState.Hash,
                     OperationId = txState.TransactionId
                 };
+
+                if (txState.State == TransactionState.Built || txState.State == TransactionState.Deleted)
+                {
+                    return NoContent();
+                }
+
+                if (txState.State == TransactionState.InProgress || !txState.IsConfirmed)
+                {
+                    response.State = BroadcastedTransactionState.InProgress;
+                    response.Timestamp = txState.BuiltOn;
+
+                    return response;
+                }
                 
+                // ReSharper disable once SwitchStatementMissingSomeCases
                 switch (txState.State)
                 {
-                    case TransactionState.Built:
-                        return NoContent();
-                    case TransactionState.InProgress:
-                        response.State = BroadcastedTransactionState.InProgress;
-                        response.Timestamp = txState.BuiltOn;
-                        break;
                     case TransactionState.Completed:
                         response.State = BroadcastedTransactionState.Completed;
-                        // ReSharper disable once PossibleInvalidOperationException
-                        response.Timestamp = txState.CompletedOn.Value;
                         break;
                     case TransactionState.Failed:
                         response.State = BroadcastedTransactionState.Failed;
-                        // ReSharper disable once PossibleInvalidOperationException
-                        response.Timestamp = txState.CompletedOn.Value;
                         break;
-                    case TransactionState.Deleted:
-                        return NoContent();
-                    default:
-                        throw new ArgumentOutOfRangeException();
                 }
 
+                if (txState.CompletedOn.HasValue)
+                {
+                    response.Timestamp = txState.CompletedOn.Value;
+                }
+                
                 if (txState.BlockNumber.HasValue)
                 {
                     response.Block = (long) txState.BlockNumber.Value;

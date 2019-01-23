@@ -38,20 +38,20 @@ namespace Lykke.Quintessence.Domain.Services
 
                 if (transaction != null)
                 {
-                    var initialTransactionState = transaction.State;
+                    var transactionChanged = false;
                     
                     // ReSharper disable once ConvertIfStatementToSwitchStatement
                     if (transaction.State == TransactionState.InProgress)
                     {
-                        await CheckTransactionCompletionStateAsync(transaction);
+                        transactionChanged = await CheckTransactionCompletionStateAsync(transaction);
                     }
 
                     if (transaction.State == TransactionState.Completed || transaction.State == TransactionState.Failed)
                     {
-                        await CheckTransactionConfirmationStateAsync(transaction);
+                        transactionChanged = await CheckTransactionConfirmationStateAsync(transaction);
                     }
 
-                    if (transaction.State != initialTransactionState)
+                    if (transactionChanged)
                     {
                         await _transactionRepository.UpdateAsync(transaction);
                     }
@@ -121,7 +121,7 @@ namespace Lykke.Quintessence.Domain.Services
             }
         }
 
-        private async Task CheckTransactionCompletionStateAsync(
+        private async Task<bool> CheckTransactionCompletionStateAsync(
             Transaction transaction)
         {
             var transactionResult = await _blockchainService.GetTransactionResultAsync(transaction.Hash);
@@ -153,15 +153,19 @@ namespace Lykke.Quintessence.Domain.Services
                             : $"Transaction [{transaction.TransactionId}] failed in block {transactionResult.BlockNumber}.",
                         new { transactionId = transaction.TransactionId }
                     );
+
+                    return true;
                 }
             }
             else
             {
                 _log.Warning($"Transaction [{transaction.TransactionId}] disappeared, after if has been broadcasted.");
             }
+
+            return false;
         }
 
-        private async Task CheckTransactionConfirmationStateAsync(
+        private async Task<bool> CheckTransactionConfirmationStateAsync(
             Transaction transaction)
         {
             if (!transaction.IsConfirmed)
@@ -175,8 +179,12 @@ namespace Lykke.Quintessence.Domain.Services
                     transaction.OnConfirmed(confirmationLevel);
   
                     _log.Info($"Transaction [{transaction.TransactionId}] has been confirmed.");
+
+                    return true;
                 }
             }
+
+            return false;
         }
     }
 }
