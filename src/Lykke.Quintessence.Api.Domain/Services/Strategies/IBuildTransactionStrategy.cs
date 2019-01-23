@@ -8,8 +8,6 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
     public interface IBuildTransactionStrategy
     {
         Task<string> ExecuteAsync(
-            ITransactionRepository transactionRepository,
-            IBlockchainService blockchainService,
             Guid transactionId,
             string from,
             string to,

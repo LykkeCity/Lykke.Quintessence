@@ -12,12 +12,13 @@ namespace Lykke.Quintessence.Domain.Services
             [NotNull] string signedTxData);
         
         [ItemNotNull]
-        Task<string> BuildTransactionAsync(
+        string BuildTransaction(
             [NotNull] string from,
             [NotNull] string to,
             BigInteger amount,
             BigInteger gasAmount,
-            BigInteger gasPrice);
+            BigInteger gasPrice,
+            BigInteger nonce);
         
         Task<BigInteger> EstimateGasPriceAsync();
         
@@ -28,6 +29,8 @@ namespace Lykke.Quintessence.Domain.Services
             [NotNull] string address,
             BigInteger blockNumber);
 
+        Task<int> GetConfirmationLevel();
+        
         Task<BigInteger> GetBestTrustedBlockNumberAsync();
 
         [ItemNotNull]

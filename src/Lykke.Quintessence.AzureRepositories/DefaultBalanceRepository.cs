@@ -77,6 +77,23 @@ namespace Lykke.Quintessence.Domain.Repositories
             return entity != null;
         }
 
+        public async Task<(IEnumerable<Balance> Balances, string ContinuationToken)> GetAllAsync(
+            int take,
+            string continuationToken)
+        {
+            var (entities, newContinuationToken) = await _balances
+                .GetDataWithContinuationTokenAsync(take, continuationToken);
+            
+            var balances = entities.Select(x => new Balance
+            (
+                address: x.RowKey,
+                amount: x.Amount,
+                blockNumber: x.BlockNumber
+            ));
+
+            return (balances, newContinuationToken);
+        }
+
         public async Task<(IEnumerable<Balance> Balances, string ContinuationToken)> GetAllTransferableBalancesAsync(
             int take,
             string continuationToken)

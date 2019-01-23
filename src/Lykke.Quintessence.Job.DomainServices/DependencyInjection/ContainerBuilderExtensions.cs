@@ -17,6 +17,7 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
             IReloadingManager<int> confirmationLevel,
             IReloadingManager<string> gasPriceRange,
             bool indexOnlyOwnTransactions,
+            BigInteger? maximalBalanceCheckPeriod, 
             BigInteger minBlockNumberToIndex)
         {
             return new DefaultJobServicesRegistrant
@@ -26,6 +27,7 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
                 confirmationLevel,
                 gasPriceRange,
                 indexOnlyOwnTransactions,
+                maximalBalanceCheckPeriod,
                 minBlockNumberToIndex
             );
         }

@@ -46,12 +46,13 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
             this ContainerBuilder builder)
         {
             builder
-                .UseDefaultCalculateGasPriceStrategy()
                 .RegisterIfNotRegistered<IBuildTransactionStrategy>
                 (
                     ctx => new DefaultBuildTransactionStrategy
                     (
-                        ctx.Resolve<ICalculateGasPriceStrategy>()
+                        ctx.Resolve<IBlockchainService>(),
+                        ctx.Resolve<INonceService>(),
+                        ctx.Resolve<ITransactionRepository>()
                     )
                 )
                 .SingleInstance();
@@ -65,7 +66,6 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
             IReloadingManager<string>  maxGasAmount)
         {
             builder
-                .UseDefaultCalculateGasPriceStrategy()
                 .RegisterIfNotRegistered<ICalculateGasAmountStrategy>
                 (
                     ctx => new DefaultCalculateGasAmountStrategy
@@ -73,19 +73,6 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
                         gasReserve,
                         maxGasAmount
                     )
-                )
-                .SingleInstance();
-
-            return builder;
-        }
-        
-        internal static ContainerBuilder UseDefaultCalculateGasPriceStrategy(
-            this ContainerBuilder builder)
-        {
-            builder
-                .RegisterIfNotRegistered<ICalculateGasPriceStrategy>
-                (
-                    ctx => new DefaultCalculateGasPriceStrategy()
                 )
                 .SingleInstance();
 

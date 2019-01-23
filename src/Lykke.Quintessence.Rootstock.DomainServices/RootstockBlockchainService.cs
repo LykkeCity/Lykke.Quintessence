@@ -13,14 +13,13 @@ namespace Lykke.Quintessence.Domain.Services
         private readonly IApiClient _apiClient;
         
         public RootstockBlockchainService(
-            IDetectContractStrategy detectContractStrategy,
             IApiClient apiClient,
+            IDetectContractStrategy detectContractStrategy,
             IGetTransactionReceiptsStrategy getTransactionReceiptsStrategy,
-            INonceService nonceService,
             ITryGetTransactionErrorStrategy tryGetTransactionErrorStrategy,
             Settings settings) 
             
-            : base(detectContractStrategy, apiClient, getTransactionReceiptsStrategy, nonceService, tryGetTransactionErrorStrategy, settings)
+            : base(apiClient, detectContractStrategy, getTransactionReceiptsStrategy, tryGetTransactionErrorStrategy, settings)
         {
             _apiClient = apiClient;
         }

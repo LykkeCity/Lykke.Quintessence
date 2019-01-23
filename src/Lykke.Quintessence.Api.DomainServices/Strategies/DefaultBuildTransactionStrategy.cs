@@ -9,19 +9,23 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
     [UsedImplicitly]
     public class DefaultBuildTransactionStrategy : IBuildTransactionStrategy
     {
-        private readonly ICalculateGasPriceStrategy _calculateGasPriceStrategy;
-        
-        
+        private readonly IBlockchainService _blockchainService;
+        private readonly INonceService _nonceService;
+        private readonly ITransactionRepository _transactionRepository;
+
+
         public DefaultBuildTransactionStrategy(
-            ICalculateGasPriceStrategy calculateGasPriceStrategy)
+            IBlockchainService blockchainService,
+            INonceService nonceService,
+            ITransactionRepository transactionRepository)
         {
-            _calculateGasPriceStrategy = calculateGasPriceStrategy;
+            _blockchainService = blockchainService;
+            _nonceService = nonceService;
+            _transactionRepository = transactionRepository;
         }
 
         
         public async Task<string> ExecuteAsync(
-            ITransactionRepository transactionRepository,
-            IBlockchainService blockchainService,
             Guid transactionId,
             string from,
             string to,
@@ -29,21 +33,20 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
             BigInteger gasAmount,
             bool includeFee)
         {
-            var gasPrice = await _calculateGasPriceStrategy.ExecuteAsync
-            (
-                blockchainService
-            );
+            var gasPrice = await _blockchainService.EstimateGasPriceAsync();
+            var nonce = await _nonceService.GetNextNonceAsync(from);
             
-            var transactionData = await blockchainService.BuildTransactionAsync
+            var transactionData = _blockchainService.BuildTransaction
             (
                 from: from,
                 to: to,
                 amount: transactionAmount,
                 gasAmount: gasAmount,
-                gasPrice: gasPrice
+                gasPrice: gasPrice,
+                nonce: nonce
             );
                 
-            await transactionRepository.AddAsync(Transaction.Create
+            await _transactionRepository.AddAsync(Transaction.Create
             (
                 transactionId: transactionId,
                 from: from,
@@ -52,6 +55,7 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
                 gasAmount: gasAmount,
                 gasPrice: gasPrice,
                 includeFee: includeFee,
+                nonce: nonce,
                 data: transactionData
             ));
             

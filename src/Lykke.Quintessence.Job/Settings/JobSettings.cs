@@ -22,6 +22,9 @@ namespace Lykke.Quintessence.Settings
         
         public bool IndexOnlyOwnTransactions { get; set; }
         
+        [Optional]
+        public string MaximalBalanceCheckPeriod { get; set; }
+        
         public string MinBlockNumberToIndex { get; set; }
         
         public RpcNodeSettings RpcNode { get; set; }

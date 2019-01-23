@@ -49,14 +49,14 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
             where T : IServicesRegistrant
         {
             registrant
+                .AddDefaultNonceService();
+            
+            registrant
                 .Builder
                 .UseDefaultDetectContractStrategy()
                 .UseDefaultGetTransactionReceiptsStrategy()
                 .UseDefaultTryGetTransactionErrorStrategy();
 
-            registrant
-                .AddDefaultNonceService();
-            
             var settings = new DefaultBlockchainService.Settings
             {
                 ConfirmationLevel = registrant.ConfirmationLevel,
@@ -69,10 +69,9 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
                 (
                     ctx => new DefaultBlockchainService
                     (
-                        ctx.Resolve<IDetectContractStrategy>(),
                         ctx.Resolve<IApiClient>(),
+                        ctx.Resolve<IDetectContractStrategy>(),
                         ctx.Resolve<IGetTransactionReceiptsStrategy>(),
-                        ctx.Resolve<INonceService>(),
                         ctx.Resolve<ITryGetTransactionErrorStrategy>(),
                         settings   
                     )

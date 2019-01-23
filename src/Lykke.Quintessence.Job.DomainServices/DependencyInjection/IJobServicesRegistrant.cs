@@ -9,6 +9,8 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
         
         bool IndexOnlyOwnTransactions { get; }
         
+        BigInteger? MaximalBalanceCheckPeriod { get; }
+        
         BigInteger MinBlockNumberToIndex { get; }
     }
 }

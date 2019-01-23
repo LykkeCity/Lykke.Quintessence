@@ -15,6 +15,10 @@ namespace Lykke.Quintessence.Domain.Repositories
         Task<bool> ExistsAsync(
             [NotNull] string address);
 
+        Task<(IEnumerable<Balance> Balances, string ContinuationToken)> GetAllAsync(
+            int take,
+            [CanBeNull] string continuationToken);
+        
         Task<(IEnumerable<Balance> Balances, string ContinuationToken)> GetAllTransferableBalancesAsync(
             int take,
             [CanBeNull] string continuationToken);

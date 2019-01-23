@@ -13,6 +13,7 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
             IReloadingManager<int> confirmationLevel,
             IReloadingManager<string> gasPriceRange,
             bool indexOnlyOwnTransactions,
+            BigInteger? maximalBalanceCheckPeriod,
             BigInteger minBlockNumberToIndex)
         {
             BlockLockDuration = blockLockDuration;
@@ -20,6 +21,7 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
             ConfirmationLevel = confirmationLevel;
             GasPriceRange = gasPriceRange;
             IndexOnlyOwnTransactions = indexOnlyOwnTransactions;
+            MaximalBalanceCheckPeriod = maximalBalanceCheckPeriod;
             MinBlockNumberToIndex = minBlockNumberToIndex;
         }
 
@@ -33,6 +35,8 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
         public IReloadingManager<string> GasPriceRange { get; }
         
         public bool IndexOnlyOwnTransactions { get; }
+        
+        public BigInteger? MaximalBalanceCheckPeriod { get; }
         
         public BigInteger MinBlockNumberToIndex { get; }
     }

@@ -13,13 +13,13 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
             this IRootstockServicesRegistrant registrant)
         {
             registrant
+                .AddRootstockNonceService();
+            
+            registrant
                 .Builder
                 .UseRootstockDetectContractStrategy()
                 .UseRootstockGetTransactionReceiptsStrategy()
                 .UseRootstockTryGetTransactionErrorStrategy();
-            
-            registrant
-                .AddRootstockNonceService();
             
             var settings = new DefaultBlockchainService.Settings
             {
@@ -33,10 +33,9 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
                 (
                     ctx => new RootstockBlockchainService
                     (
-                        ctx.Resolve<IDetectContractStrategy>(),
                         ctx.Resolve<IApiClient>(),
+                        ctx.Resolve<IDetectContractStrategy>(),
                         ctx.Resolve<IGetTransactionReceiptsStrategy>(),
-                        ctx.Resolve<INonceService>(),
                         ctx.Resolve<ITryGetTransactionErrorStrategy>(),
                         settings
                     )

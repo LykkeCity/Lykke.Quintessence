@@ -137,8 +137,6 @@ namespace Lykke.Quintessence.Domain.Services
 
                 var transactionData = await _buildTransactionStrategy.ExecuteAsync
                 (
-                    transactionRepository: _transactionRepository,
-                    blockchainService: _blockchainService,
                     transactionId: transactionId,
                     from: from,
                     to: to,

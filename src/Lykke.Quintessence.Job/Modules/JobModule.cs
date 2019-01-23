@@ -1,10 +1,14 @@
 using System.Numerics;
 using Autofac;
+using Common;
 using JetBrains.Annotations;
 using Lykke.Common.Chaos;
+using Lykke.Quintessence.Core.DependencyInjection;
 using Lykke.Quintessence.DependencyInjection;
+using Lykke.Quintessence.Domain.PeriodicalHandlers;
 using Lykke.Quintessence.Domain.Repositories.DependencyInjection;
 using Lykke.Quintessence.Domain.Services.DependencyInjection;
+using Lykke.Quintessence.PeriodicalHandlers;
 using Lykke.Quintessence.RpcClient.DependencyInjection;
 using Lykke.Quintessence.Settings;
 using Lykke.SettingsReader;
@@ -29,6 +33,14 @@ namespace Lykke.Quintessence.Modules
             var connectionString = _appSettings.ConnectionString(x => x.Job.Db.DataConnString);
             var jobSettings = _appSettings.Nested(x => x.Job);
             var rpcNodeSettings = jobSettings.CurrentValue.RpcNode;
+
+            BigInteger? maximalBalanceCheckPeriod = null;
+            
+            if (!string.IsNullOrEmpty(jobSettings.CurrentValue.MaximalBalanceCheckPeriod))
+            {
+                maximalBalanceCheckPeriod = BigInteger.Parse(jobSettings.CurrentValue.MaximalBalanceCheckPeriod);
+            }
+            
             
             builder
                 .RegisterChaosKitty(_appSettings.CurrentValue.Chaos);
@@ -45,9 +57,9 @@ namespace Lykke.Quintessence.Modules
 
             builder
                 .UseAzureRepositories(connectionString)
+                .AddDefaultBalanceCheckSchedulerLockRepository()
                 .AddDefaultBalanceRepository()
                 .AddDefaultBalanceMonitoringTaskRepository()
-                .AddDefaultBalanceRepository()
                 .AddDefaultBlockchainIndexationStateRepository()
                 .AddDefaultBlockIndexationLockRepository()
                 .AddDefaultTransactionReceiptRepository()
@@ -61,8 +73,10 @@ namespace Lykke.Quintessence.Modules
                     jobSettings.Nested(x => x.ConfirmationLevel),
                     jobSettings.Nested(x => x.GasPriceRange),
                     jobSettings.CurrentValue.IndexOnlyOwnTransactions,
+                    maximalBalanceCheckPeriod,
                     BigInteger.Parse(jobSettings.CurrentValue.MinBlockNumberToIndex)
                 )
+                .AddDefaultBalanceCheckSchedulingService()
                 .AddDefaultBalanceMonitoringService()
                 .AddDefaultBlockchainIndexingService()
                 .AddDefaultTransactionMonitoringService();
@@ -77,6 +91,15 @@ namespace Lykke.Quintessence.Modules
                 .AddBalanceMonitoringQueueConsumer()
                 .AddBlockchainIndexationQueueConsumer()
                 .AddTransactionMonitoringQueueConsumer();
+
+            if (maximalBalanceCheckPeriod.HasValue)
+            {
+                builder.RegisterType<DefaultBalanceCheckScheduler>()
+                    .IfNotRegistered(typeof(IBalanceCheckScheduler))
+                    .As<IStartable>()
+                    .As<IStopable>()
+                    .SingleInstance();
+            }
         }
     }
 }

@@ -44,6 +44,13 @@ namespace Lykke.Quintessence.Domain.Repositories.DependencyInjection
 
             return registrant;
         }
+
+        public static IAzureRepositoriesRegistrant AddDefaultBalanceCheckSchedulerLockRepository(
+            this IAzureRepositoriesRegistrant registrant)
+        {
+            return registrant
+                .RegisterDefaultRepository(DefaultBalanceCheckSchedulerLockRepository.Create);
+        }
         
         public static IAzureRepositoriesRegistrant AddDefaultBalanceMonitoringTaskRepository(
             this IAzureRepositoriesRegistrant registrant)

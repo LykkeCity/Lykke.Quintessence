@@ -11,6 +11,36 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
     [PublicAPI]
     public static class JobServicesRegistrantExtensions
     {
+        public static IJobServicesRegistrant AddDefaultBalanceCheckSchedulingService(
+            this IJobServicesRegistrant registrant)
+        {
+            if (registrant.MaximalBalanceCheckPeriod.HasValue)
+            {
+                var settings = new DefaultBalanceCheckSchedulingService.Settings
+                {
+                    MaximalBalanceCheckPeriod = registrant.MaximalBalanceCheckPeriod.Value
+                };
+            
+                registrant
+                    .Builder
+                    .RegisterIfNotRegistered<IBalanceCheckSchedulingService>
+                    (
+                        ctx => new DefaultBalanceCheckSchedulingService
+                        (
+                            ctx.Resolve<IBalanceCheckSchedulerLockRepository>(),
+                            ctx.Resolve<IBalanceRepository>(),
+                            ctx.Resolve<IBalanceMonitoringTaskRepository>(),
+                            ctx.Resolve<IBlockchainService>(),
+                            ctx.Resolve<ILogFactory>(),
+                            settings
+                        )
+                    )
+                    .SingleInstance();
+            }
+            
+            return registrant;
+        }
+        
         public static IJobServicesRegistrant AddDefaultBalanceMonitoringService(
             this IJobServicesRegistrant registrant)
         {

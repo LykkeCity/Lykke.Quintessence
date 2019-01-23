@@ -24,25 +24,21 @@ namespace Lykke.Quintessence.Domain.Services
         private readonly IApiClient _apiClient;
         private readonly SettingManager<string, (BigInteger, BigInteger)> _gasPriceRange;
         private readonly IGetTransactionReceiptsStrategy _getTransactionReceiptsStrategy;
-        private readonly INonceService _nonceService;
         private readonly ITryGetTransactionErrorStrategy _tryGetTransactionErrorStrategy;
 
         
         public DefaultBlockchainService(
-            IDetectContractStrategy detectContractStrategy,
             IApiClient apiClient,
+            IDetectContractStrategy detectContractStrategy,
             IGetTransactionReceiptsStrategy getTransactionReceiptsStrategy,
-            INonceService nonceService,
             ITryGetTransactionErrorStrategy tryGetTransactionErrorStrategy,
             Settings settings)
         {
-            _detectContractStrategy = detectContractStrategy;
             _apiClient = apiClient;
+            _detectContractStrategy = detectContractStrategy;
             _getTransactionReceiptsStrategy = getTransactionReceiptsStrategy;
-            _nonceService = nonceService;
             _tryGetTransactionErrorStrategy = tryGetTransactionErrorStrategy;
             
-         
             _confirmationLevel = new SettingManager<int>
             (
                 settings.ConfirmationLevel,
@@ -88,12 +84,13 @@ namespace Lykke.Quintessence.Domain.Services
             );
         }
 
-        public virtual async Task<string> BuildTransactionAsync(
+        public virtual string BuildTransaction(
             string from,
             string to,
             BigInteger amount,
             BigInteger gasAmount,
-            BigInteger gasPrice)
+            BigInteger gasPrice,
+            BigInteger nonce)
         {
             var transactionParams = JsonConvert.SerializeObject(new DefaultTransactionParams
             (
@@ -101,7 +98,7 @@ namespace Lykke.Quintessence.Domain.Services
                 from: from,
                 gasAmount: gasAmount,
                 gasPrice: gasPrice,
-                nonce: await _nonceService.GetNextNonceAsync(from),
+                nonce: nonce,
                 to: to
             ));
 
@@ -141,6 +138,11 @@ namespace Lykke.Quintessence.Domain.Services
             return _apiClient.GetBalanceAsync(address, blockNumber);
         }
 
+        public virtual Task<int> GetConfirmationLevel()
+        {
+            return _confirmationLevel.GetValueAsync();
+        }
+        
         public virtual async Task<BigInteger> GetBestTrustedBlockNumberAsync()
         {
             var bestBlockNumber = await _apiClient.GetBestBlockNumberAsync();

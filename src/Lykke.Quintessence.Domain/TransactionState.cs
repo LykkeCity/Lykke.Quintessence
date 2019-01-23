@@ -5,7 +5,6 @@
         Built,
         InProgress,
         Completed,
-        Confirmed,
         Failed,
         Deleted
     }

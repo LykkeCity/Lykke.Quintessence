@@ -13,6 +13,7 @@ namespace Lykke.Quintessence.Domain
             BigInteger gasAmount,
             BigInteger gasPrice,
             bool includeFee,
+            BigInteger nonce,
             TransactionState state,
             string to,
             Guid transactionId)
@@ -24,6 +25,7 @@ namespace Lykke.Quintessence.Domain
             GasAmount = gasAmount;
             GasPrice = gasPrice;
             IncludeFee = includeFee;
+            Nonce = nonce;
             State = state;
             To = to;
             TransactionId = transactionId;
@@ -35,6 +37,8 @@ namespace Lykke.Quintessence.Domain
             DateTime? broadcastedOn,
             DateTime builtOn,
             DateTime? completedOn,
+            BigInteger? confirmationLevel,
+            DateTime? confirmedOn,
             string data,
             DateTime? deletedOn,
             string error,
@@ -43,6 +47,8 @@ namespace Lykke.Quintessence.Domain
             BigInteger gasPrice,
             string hash,
             bool includeFee,
+            bool isConfirmed,
+            BigInteger nonce,
             string signedData,
             TransactionState state,
             string to,
@@ -53,6 +59,8 @@ namespace Lykke.Quintessence.Domain
             BroadcastedOn = broadcastedOn;
             BuiltOn = builtOn;
             CompletedOn = completedOn;
+            ConfirmationLevel = confirmationLevel;
+            ConfirmedOn = confirmedOn;
             Data = data;
             DeletedOn = deletedOn;
             Error = error;
@@ -61,6 +69,8 @@ namespace Lykke.Quintessence.Domain
             GasPrice = gasPrice;
             Hash = hash;
             IncludeFee = includeFee;
+            IsConfirmed = isConfirmed;
+            Nonce = nonce;
             SignedData = signedData;
             State = state;
             To = to;
@@ -75,6 +85,7 @@ namespace Lykke.Quintessence.Domain
             BigInteger gasAmount,
             BigInteger gasPrice,
             bool includeFee,
+            BigInteger nonce,
             string data)
         {
             return new Transaction
@@ -86,6 +97,7 @@ namespace Lykke.Quintessence.Domain
                 gasAmount: gasAmount,
                 gasPrice: gasPrice,
                 includeFee: includeFee,
+                nonce: nonce,
                 state: TransactionState.Built,
                 to: to,
                 transactionId: transactionId
@@ -102,6 +114,8 @@ namespace Lykke.Quintessence.Domain
         public DateTime BuiltOn { get; }
         
         public DateTime? CompletedOn { get; private set; }
+        
+        public BigInteger? ConfirmationLevel { get; private set; }
         
         public DateTime? ConfirmedOn { get; private set; }
         
@@ -121,7 +135,9 @@ namespace Lykke.Quintessence.Domain
         
         public bool IncludeFee { get; }
         
-        public BigInteger? Nonce { get; private set; }
+        public bool IsConfirmed { get; private set; }
+        
+        public BigInteger Nonce { get; }
         
         public string SignedData { get; private set; }
         
@@ -152,14 +168,22 @@ namespace Lykke.Quintessence.Domain
             }
         }
 
-        public void OnCompleted()
+        public void OnConfirmed(
+            BigInteger confirmationLevel)
         {
-            
-        }
-
-        public void OnConfirmed()
-        {
-            
+            if (State == TransactionState.Completed || State == TransactionState.Failed)
+            {
+                ConfirmedOn = DateTime.UtcNow;
+                ConfirmationLevel = confirmationLevel;
+                IsConfirmed = true;
+            }
+            else
+            {
+                throw new InvalidOperationException
+                (
+                    $"Transaction can not be confirmed in current [{State.ToString()}] state."
+                );
+            }
         }
         
         public void OnDeleted()

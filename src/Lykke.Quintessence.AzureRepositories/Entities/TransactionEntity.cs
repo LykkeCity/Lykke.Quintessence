@@ -14,10 +14,13 @@ namespace Lykke.Quintessence.Domain.Repositories.Entities
         private DateTime? _broadcastedOn;
         private DateTime _builtOn;
         private DateTime? _completedOn;
+        private BigInteger? _confirmationLevel;
+        private DateTime? _confirmedOn;
         private DateTime? _deletedOn;
         private BigInteger _gasAmount;
         private BigInteger _gasPrice;
         private bool _includeFee;
+        private bool _isConfirmed;
         private TransactionState _state;
         private Guid _transactionId;
         
@@ -97,6 +100,38 @@ namespace Lykke.Quintessence.Domain.Repositories.Entities
             }
         }
 
+        public BigInteger? ConfirmationLevel
+        {
+            get
+                => _confirmationLevel;
+
+            set
+            {
+                if (_confirmationLevel != value)
+                {
+                    _confirmationLevel = value;
+                    
+                    MarkValueTypePropertyAsDirty(nameof(ConfirmationLevel));
+                }
+            }
+        }
+        
+        public DateTime? ConfirmedOn
+        {
+            get
+                => _confirmedOn;
+
+            set
+            {
+                if (_confirmedOn != value)
+                {
+                    _confirmedOn = value;
+                    
+                    MarkValueTypePropertyAsDirty(nameof(ConfirmedOn));
+                }
+            }
+        }
+        
         public string Data { get; set; }
 
         public DateTime? DeletedOn
@@ -165,6 +200,24 @@ namespace Lykke.Quintessence.Domain.Repositories.Entities
             }
         }
 
+        public bool IsConfirmed
+        {
+            get
+                => _isConfirmed;
+
+            set
+            {
+                if (_isConfirmed != value)
+                {
+                    _isConfirmed = value;
+                    
+                    MarkValueTypePropertyAsDirty(nameof(IsConfirmed));
+                }
+            }
+        }
+        
+        public BigInteger Nonce { get; set; }
+        
         public string SignedData { get; set; }
 
         public TransactionState State

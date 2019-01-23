@@ -46,6 +46,8 @@ namespace Lykke.Quintessence.Domain.Repositories
                 BroadcastedOn = transaction.BroadcastedOn,
                 BuiltOn = transaction.BuiltOn,
                 CompletedOn = transaction.CompletedOn,
+                ConfirmationLevel = transaction.ConfirmationLevel,
+                ConfirmedOn = transaction.ConfirmedOn,
                 Data = transaction.Data,
                 DeletedOn = transaction.DeletedOn,
                 Error = transaction.Error,
@@ -54,6 +56,8 @@ namespace Lykke.Quintessence.Domain.Repositories
                 GasPrice = transaction.GasPrice,
                 Hash = transaction.Hash,
                 IncludeFee = transaction.IncludeFee,
+                IsConfirmed = transaction.IsConfirmed,
+                Nonce = transaction.Nonce,
                 SignedData = transaction.SignedData,
                 State = transaction.State,
                 To = transaction.To,
@@ -86,14 +90,18 @@ namespace Lykke.Quintessence.Domain.Repositories
                     broadcastedOn: transactionEntity.BroadcastedOn,
                     builtOn: transactionEntity.BuiltOn,
                     completedOn: transactionEntity.CompletedOn,
+                    confirmationLevel: transactionEntity.ConfirmationLevel,
+                    confirmedOn: transactionEntity.ConfirmedOn,
                     data: transactionEntity.Data,
                     deletedOn: transactionEntity.DeletedOn,
                     error: transactionEntity.Error,
-                    @from: transactionEntity.From,
+                    from: transactionEntity.From,
                     gasAmount: transactionEntity.GasAmount,
                     gasPrice: transactionEntity.GasPrice,
                     hash: transactionEntity.Hash,
                     includeFee: transactionEntity.IncludeFee,
+                    isConfirmed: transactionEntity.IsConfirmed,
+                    nonce: transactionEntity.Nonce,
                     signedData: transactionEntity.SignedData,
                     state: transactionEntity.State,
                     to: transactionEntity.To,
@@ -116,6 +124,8 @@ namespace Lykke.Quintessence.Domain.Repositories
                 entity.BroadcastedOn = transaction.BroadcastedOn;
                 entity.BuiltOn = transaction.BuiltOn;
                 entity.CompletedOn = transaction.CompletedOn;
+                entity.ConfirmationLevel = transaction.ConfirmationLevel;
+                entity.ConfirmedOn = transaction.ConfirmedOn;
                 entity.Data = transaction.Data;
                 entity.DeletedOn = transaction.DeletedOn;
                 entity.Error = transaction.Error;
@@ -124,6 +134,8 @@ namespace Lykke.Quintessence.Domain.Repositories
                 entity.GasPrice = transaction.GasPrice;
                 entity.Hash = transaction.Hash;
                 entity.IncludeFee = transaction.IncludeFee;
+                entity.IsConfirmed = transaction.IsConfirmed;
+                entity.Nonce = transaction.Nonce;
                 entity.SignedData = transaction.SignedData;
                 entity.State = transaction.State;
                 entity.To = transaction.To;
