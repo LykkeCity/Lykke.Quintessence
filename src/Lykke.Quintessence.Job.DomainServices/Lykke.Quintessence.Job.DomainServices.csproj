@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>Lykke.Quintessence.Domain.Services</RootNamespace>
+        <Version>1.0.1</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Lykke.Quintessence.DomainServices\Lykke.Quintessence.DomainServices.csproj" />
+      <ProjectReference Include="..\Lykke.Quintessence.Job.Domain\Lykke.Quintessence.Job.Domain.csproj" />
+    </ItemGroup>
+
+</Project>
