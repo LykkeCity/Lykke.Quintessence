@@ -5,7 +5,7 @@ using Multiformats.Hash;
 
 namespace Lykke.Quintessence.Core.Crypto
 {
-    [UsedImplicitly]
+    [UsedImplicitly, PublicAPI]
     public class HashCalculator : IHashCalculator
     {
         // ReSharper disable once InconsistentNaming
@@ -15,6 +15,8 @@ namespace Lykke.Quintessence.Core.Crypto
         public static HashCalculator Keccak256
             => new HashCalculator(HashType.KECCAK_256);
         
+        public static HashCalculator Sha3256
+            => new HashCalculator(HashType.SHA3_256);
         
         private readonly HashType _hashType;
         
