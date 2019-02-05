@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Version>1.0.1</Version>
+        <RootNamespace>Lykke.Quintessence.Domain.Services</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Lykke.Quintessence.Domain\Lykke.Quintessence.Domain.csproj" />
+      <ProjectReference Include="..\Lykke.Quintessence.RpcClient.Abstractions\Lykke.Quintessence.RpcClient.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup Label="dotnet pack instructions">
+        <Content Include="$(OutputPath)$(AssemblyName).pdb">
+            <Pack>true</Pack>
+            <PackagePath>lib/netstandard2.0</PackagePath>
+        </Content>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="Lykke.Common" Version="7.3.1" />
+      <PackageReference Include="Lykke.SettingsReader" Version="4.2.0" />
+    </ItemGroup>
+
+</Project>
