@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>Lykke.Quintessence.Core</RootNamespace>
+        <Version>1.0.1</Version>
+    </PropertyGroup>
+
+    <ItemGroup Label="dotnet pack instructions">
+        <Content Include="$(OutputPath)$(AssemblyName).pdb">
+            <Pack>true</Pack>
+            <PackagePath>lib/netstandard2.0</PackagePath>
+        </Content>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" />
+        <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
+    </ItemGroup>
+</Project>
