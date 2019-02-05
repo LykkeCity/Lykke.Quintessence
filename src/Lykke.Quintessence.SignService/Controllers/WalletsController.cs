@@ -21,12 +21,13 @@ namespace Lykke.Quintessence.Controllers
         [HttpPost]
         public async Task<ActionResult<WalletResponse>> CreateWallet()
         {
-            var (address, privateKey) = await _walletService.CreateWalletAsync();
+            var (address, addressContext, privateKey) = await _walletService.CreateWalletAsync();
             
             return new WalletResponse
             {
                 PrivateKey = privateKey,
-                PublicAddress = address
+                PublicAddress = address,
+                AddressContext = addressContext
             };
         }
     }

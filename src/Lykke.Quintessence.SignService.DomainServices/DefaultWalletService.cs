@@ -21,11 +21,11 @@ namespace Lykke.Quintessence.Domain.Services
         }
 
         
-        public async Task<(string Address, string PrivateKey)> CreateWalletAsync()
+        public async Task<(string Address, string AddressContext, string PrivateKey)> CreateWalletAsync()
         {
-            var (address, _, privateKey) = await _walletGenerator.GenerateWalletAsync();
+            var (address, addressContext, privateKey) = await _walletGenerator.GenerateWalletAsync();
 
-            return (await _addChecksumStrategy.ExecuteAsync(address), privateKey);
+            return (await _addChecksumStrategy.ExecuteAsync(address), addressContext, privateKey);
         }
     }
 }

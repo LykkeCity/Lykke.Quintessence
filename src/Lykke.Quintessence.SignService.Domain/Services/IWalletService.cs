@@ -4,6 +4,6 @@ namespace Lykke.Quintessence.Domain.Services
 {
     public interface IWalletService
     {
-        Task<(string Address, string PrivateKey)> CreateWalletAsync();
+        Task<(string Address, string AddressContext, string PrivateKey)> CreateWalletAsync();
     }
 }
