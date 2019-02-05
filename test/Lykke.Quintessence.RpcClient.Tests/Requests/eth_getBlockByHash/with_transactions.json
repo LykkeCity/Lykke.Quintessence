@@ -1,0 +1,1 @@
+{"jsonrpc":"2.0","method":"eth_getBlockByHash","params":["0x35c9a41ae1380141d1163c3ada714a924842fb7519f1a07ae2c21a94d2fa84be",true],"id":1}
