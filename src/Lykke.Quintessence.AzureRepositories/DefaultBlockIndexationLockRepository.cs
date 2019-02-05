@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -52,14 +53,15 @@ namespace Lykke.Quintessence.Domain.Repositories
             );
         }
 
-        public async Task<IEnumerable<BlockIndexationLock>> GetAsync()
+        public async Task<IReadOnlyCollection<BlockIndexationLock>> GetAsync()
         {
             return (await _locks.GetDataAsync())
                 .Select(x => new BlockIndexationLock
                 (
                     blockNumber: x.BlockNumber,
                     lockedOn: x.LockedOn
-                ));
+                ))
+                .ToImmutableList();
         }
 
         public Task InsertOrReplaceAsync(

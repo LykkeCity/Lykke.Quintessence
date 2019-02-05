@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -60,7 +61,7 @@ namespace Lykke.Quintessence.Domain.Repositories
             return (await TryGetAsync(address)) != null;
         }
 
-        public async Task<(IEnumerable<WhitelistedAddress> Addresses, string ContinuationToken)> GetAllAsync(
+        public async Task<(IReadOnlyCollection<WhitelistedAddress> Addresses, string ContinuationToken)> GetAllAsync(
             int take,
             string continuationToken)
         {
@@ -68,7 +69,7 @@ namespace Lykke.Quintessence.Domain.Repositories
             
             (addresses, continuationToken) = await _whitelistedAddresses.GetDataWithContinuationTokenAsync(take, continuationToken);
 
-            return (addresses.Select(x => new WhitelistedAddress(x.RowKey, x.MaxGasAmount)), continuationToken);
+            return (addresses.Select(x => new WhitelistedAddress(x.RowKey, x.MaxGasAmount)).ToImmutableList(), continuationToken);
         }
 
         public Task<bool> RemoveIfExistsAsync(string address)

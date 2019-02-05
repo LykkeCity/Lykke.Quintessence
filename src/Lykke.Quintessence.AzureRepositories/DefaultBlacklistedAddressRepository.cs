@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using AzureStorage;
@@ -61,7 +62,7 @@ namespace Lykke.Quintessence.Domain.Repositories
             return blacklistedAddress != null;
         }
         
-        public async Task<(IEnumerable<BlacklistedAddress> Addresses, string ContinuationToken)> GetAllAsync(
+        public async Task<(IReadOnlyCollection<BlacklistedAddress> Addresses, string ContinuationToken)> GetAllAsync(
             int take,
             string continuationToken)
         {
@@ -69,7 +70,7 @@ namespace Lykke.Quintessence.Domain.Repositories
             
             (addresses, continuationToken) = await _blacklistedAddresses.GetDataWithContinuationTokenAsync(take, continuationToken);
 
-            return (addresses.Select(x => new BlacklistedAddress(x.RowKey, x.Reason)), continuationToken);
+            return (addresses.Select(x => new BlacklistedAddress(x.RowKey, x.Reason)).ToImmutableList(), continuationToken);
         }
 
         public async Task<BlacklistedAddress> TryGetAsync(

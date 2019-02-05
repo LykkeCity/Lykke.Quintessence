@@ -13,7 +13,7 @@ namespace Lykke.Quintessence.Domain.Repositories
         Task<bool> ContainsAsync(
             string address);
         
-        Task<(IEnumerable<WhitelistedAddress> Addresses, string ContinuationToken)> GetAllAsync(
+        Task<(IReadOnlyCollection<WhitelistedAddress> Addresses, string ContinuationToken)> GetAllAsync(
             int take,
             string continuationToken);
         

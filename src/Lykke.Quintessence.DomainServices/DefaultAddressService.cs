@@ -99,14 +99,14 @@ namespace Lykke.Quintessence.Domain.Services
             }
         }
 
-        public Task<(IEnumerable<BlacklistedAddress> BlacklistedAddresses, string ContinuationToken)> GetBlacklistedAddressesAsync(
+        public Task<(IReadOnlyCollection<BlacklistedAddress> BlacklistedAddresses, string ContinuationToken)> GetBlacklistedAddressesAsync(
             int take,
             string continuationToken)
         {
             return _blacklistedAddressRepository.GetAllAsync(take, continuationToken);
         }
 
-        public Task<(IEnumerable<WhitelistedAddress> WhitelistedAddresses, string ContinuationToken)> GetWhitelistedAddressesAsync(
+        public Task<(IReadOnlyCollection<WhitelistedAddress> WhitelistedAddresses, string ContinuationToken)> GetWhitelistedAddressesAsync(
             int take,
             string continuationToken)
         {

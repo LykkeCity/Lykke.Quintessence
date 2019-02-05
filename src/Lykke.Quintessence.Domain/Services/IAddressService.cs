@@ -18,11 +18,11 @@ namespace Lykke.Quintessence.Domain.Services
             [NotNull] string address,
             BigInteger maxGasAmount);
 
-        Task<(IEnumerable<BlacklistedAddress> BlacklistedAddresses, string ContinuationToken)> GetBlacklistedAddressesAsync(
+        Task<(IReadOnlyCollection<BlacklistedAddress> BlacklistedAddresses, string ContinuationToken)> GetBlacklistedAddressesAsync(
             int take,
             [CanBeNull] string continuationToken);
 
-        Task<(IEnumerable<WhitelistedAddress> WhitelistedAddresses, string ContinuationToken)> GetWhitelistedAddressesAsync(
+        Task<(IReadOnlyCollection<WhitelistedAddress> WhitelistedAddresses, string ContinuationToken)> GetWhitelistedAddressesAsync(
             int take,
             [CanBeNull] string continuationToken);
 

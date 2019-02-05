@@ -9,7 +9,7 @@ namespace Lykke.Quintessence.Domain.Repositories
         Task DeleteIfExistsAsync(
             BigInteger blockNumber);
         
-        Task<IEnumerable<BlockIndexationLock>> GetAsync();
+        Task<IReadOnlyCollection<BlockIndexationLock>> GetAsync();
         
         Task InsertOrReplaceAsync(
             BigInteger blockNumber);

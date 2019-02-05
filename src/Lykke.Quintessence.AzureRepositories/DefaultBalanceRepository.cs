@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using AzureStorage;
@@ -77,24 +78,26 @@ namespace Lykke.Quintessence.Domain.Repositories
             return entity != null;
         }
 
-        public async Task<(IEnumerable<Balance> Balances, string ContinuationToken)> GetAllAsync(
+        public async Task<(IReadOnlyCollection<Balance> Balances, string ContinuationToken)> GetAllAsync(
             int take,
             string continuationToken)
         {
             var (entities, newContinuationToken) = await _balances
                 .GetDataWithContinuationTokenAsync(take, continuationToken);
             
-            var balances = entities.Select(x => new Balance
-            (
-                address: x.RowKey,
-                amount: x.Amount,
-                blockNumber: x.BlockNumber
-            ));
+            var balances = entities
+                .Select(x => new Balance
+                (
+                    address: x.RowKey,
+                    amount: x.Amount,
+                    blockNumber: x.BlockNumber
+                ))
+                .ToImmutableList();
 
             return (balances, newContinuationToken);
         }
 
-        public async Task<(IEnumerable<Balance> Balances, string ContinuationToken)> GetAllTransferableBalancesAsync(
+        public async Task<(IReadOnlyCollection<Balance> Balances, string ContinuationToken)> GetAllTransferableBalancesAsync(
             int take,
             string continuationToken)
         {
@@ -106,12 +109,14 @@ namespace Lykke.Quintessence.Domain.Repositories
             var (entities, newContinuationToken) = await _balances
                 .GetDataWithContinuationTokenAsync(rangeQuery, take, continuationToken);
 
-            var balances = entities.Select(x => new Balance
-            (
-                address: x.RowKey,
-                amount: x.Amount,
-                blockNumber: x.BlockNumber
-            ));
+            var balances = entities
+                .Select(x => new Balance
+                (
+                    address: x.RowKey,
+                    amount: x.Amount,
+                    blockNumber: x.BlockNumber
+                ))
+                .ToImmutableList();
 
             return (balances, newContinuationToken);
         }
