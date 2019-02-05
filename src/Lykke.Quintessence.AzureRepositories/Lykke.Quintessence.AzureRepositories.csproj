@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Version>1.0.1</Version>
+        <RootNamespace>Lykke.Quintessence.Domain.Repositories</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Fody" Version="3.3.5">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Lykke.AzureStorage" Version="8.13.4" />
+        <PackageReference Include="Lykke.Common" Version="7.3.1" />
+        <PackageReference Include="ModuleInit.Fody" Version="1.9.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Lykke.Quintessence.Domain\Lykke.Quintessence.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup Label="dotnet pack instructions">
+        <Content Include="$(OutputPath)$(AssemblyName).pdb">
+            <Pack>true</Pack>
+            <PackagePath>lib/netstandard2.0</PackagePath>
+        </Content>
+    </ItemGroup>
+
+</Project>
