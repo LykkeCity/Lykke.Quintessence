@@ -11,4 +11,11 @@
       <ProjectReference Include="..\Lykke.Quintessence.Job.Domain\Lykke.Quintessence.Job.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup Label="dotnet pack instructions">
+        <Content Include="$(OutputPath)$(AssemblyName).pdb">
+            <Pack>true</Pack>
+            <PackagePath>lib/netstandard2.0</PackagePath>
+        </Content>
+    </ItemGroup>
+
 </Project>
