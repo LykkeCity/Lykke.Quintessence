@@ -35,6 +35,7 @@ namespace Lykke.Quintessence.Controllers
             (
                 transactionId: request.OperationId,
                 from: from,
+                fromContext: request.FromAddressContext,
                 to: to,
                 transferAmount: amount,
                 includeFee: request.IncludeFee

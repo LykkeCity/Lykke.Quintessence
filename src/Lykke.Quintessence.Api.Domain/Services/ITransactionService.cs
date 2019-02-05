@@ -11,6 +11,7 @@ namespace Lykke.Quintessence.Domain.Services
         Task<BuildTransactionResult> BuildTransactionAsync(
             Guid transactionId,
             [NotNull] string from,
+            [CanBeNull] string fromContext,
             [NotNull] string to,
             BigInteger transferAmount,
             bool includeFee);
