@@ -21,6 +21,8 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
         public async Task<string> ExecuteAsync(
             string address)
         {
+            // See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md for details
+            
             address = address.Remove(0, 2).ToLowerInvariant();
 
             var addressBytes = Encoding.UTF8.GetBytes(address);
