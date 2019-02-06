@@ -1,0 +1,36 @@
+Api:
+  ConfirmationLevel:
+    settings-key: Bcn-Sample-ConfirmationLevel
+  GasPriceRange:
+    settings-key: Bcn-Sample-GasPriceRange
+  GasReserve:
+    settings-key: Bcn-Sample-GasReserve
+  MaxGasAmount:
+    settings-key: Bcn-Sample-MaxGasAmount
+  Db:
+    DataConnString:
+      settings-key: Bcn-Sample-DataConnString
+      types:
+        - AzureTableStorage
+    LogsConnString:
+      settings-key: BcnLogsConnString
+        types:
+        - AzureTableStorage
+  RpcNode:
+    ApiUrl:
+      settings-key: Bcn-Sample-RpcNodeApiUrl
+    ConnectionTimeout:
+      settings-key: Bcn-Sample-RpcNodeConnectionTimeout
+    EnableTelemetry:
+      settings-key: Bcn-Sample-RpcNodeEnableTelemetry
+SlackNotifications:
+  AzureQueue:
+    ConnectionString:
+      settings-key: SlackNotificationsConnString
+      types:
+        - AzureTableStorage
+    QueueName:
+      settings-key: SlackQueueName
+MonitoringServiceClient:
+  MonitoringServiceUrl:
+    settings-key: MonitoringServiceUrl
