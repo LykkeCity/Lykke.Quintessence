@@ -63,7 +63,7 @@ namespace Lykke.Quintessence.Controllers
                 
                 default:
                     throw new NotSupportedException(
-                        $"{nameof(_addressService.AddAddressToBlacklistAsync)} returned unsupported result.");
+                        $"{nameof(_addressService.AddAddressToBlacklistAsync)} returned unsupported result [{result.GetType().Name}].");
             }
         }
         
@@ -87,7 +87,7 @@ namespace Lykke.Quintessence.Controllers
                 
                 default:
                     throw new NotSupportedException(
-                        $"{nameof(_addressService.AddAddressToWhitelistAsync)} returned unsupported result.");
+                        $"{nameof(_addressService.AddAddressToWhitelistAsync)} returned unsupported result [{result.GetType().Name}].");
             }
         }
 
@@ -168,7 +168,7 @@ namespace Lykke.Quintessence.Controllers
                 
                 default:
                     throw new NotSupportedException(
-                        $"{nameof(_addressService.RemoveAddressFromBlacklistAsync)} returned unsupported result.");
+                        $"{nameof(_addressService.RemoveAddressFromBlacklistAsync)} returned unsupported result [{result.GetType().Name}].");
             }
         }
         
@@ -188,7 +188,7 @@ namespace Lykke.Quintessence.Controllers
                 
                 default:
                     throw new NotSupportedException(
-                        $"{nameof(_addressService.RemoveAddressFromWhitelistAsync)} returned unsupported result.");
+                        $"{nameof(_addressService.RemoveAddressFromWhitelistAsync)} returned unsupported result [{result.GetType().Name}].");
             }
         }
 
