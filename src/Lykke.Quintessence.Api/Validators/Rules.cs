@@ -52,7 +52,7 @@ namespace Lykke.Quintessence.Validators
                         return false;
                     }
                     
-                    var validationResult = await addressService.ValidateAsync(address, false, false);
+                    var validationResult = await addressService.ValidateAsync(address, false, true);
 
                     if (validationResult is AddressValidationResult.Error error)
                     {
