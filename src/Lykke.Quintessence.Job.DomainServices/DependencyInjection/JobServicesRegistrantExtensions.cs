@@ -108,7 +108,8 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
             this IJobServicesRegistrant registrant)
         {
             registrant
-                .AddDefaultBlockchainService();
+                .AddDefaultBlockchainService()
+                .AddDefaultAddressService();
             
             registrant
                 .Builder
@@ -116,6 +117,7 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
                 (
                     ctx => new DefaultTransactionMonitoringService
                     (
+                        ctx.Resolve<IAddressService>(),
                         ctx.Resolve<IBlockchainService>(),
                         ctx.Resolve<ILogFactory>(),
                         ctx.Resolve<ITransactionMonitoringTaskRepository>(),
