@@ -63,7 +63,7 @@ namespace Lykke.Quintessence.Controllers
                                 BlockchainErrorCode.NotEnoughBalance));
                     
                     case BuildTransactionError.GasAmountIsInvalid:
-                        return Conflict(
+                        return BadRequest(
                             BlockchainErrorResponse.FromUnknownError
                                 ($"Gas amount for transaction [{request.OperationId}] can not be estimated."));
                     
