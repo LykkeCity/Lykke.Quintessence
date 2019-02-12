@@ -10,6 +10,7 @@ namespace Lykke.Quintessence.Domain.Services
     [UsedImplicitly]
     public class DefaultTransactionMonitoringService : ITransactionMonitoringService
     {
+        private readonly IAddressService _addressService;
         private readonly IBlockchainService _blockchainService;
         private readonly ILog _log;
         private readonly ITransactionMonitoringTaskRepository _transactionMonitoringTaskRepository;
@@ -17,11 +18,13 @@ namespace Lykke.Quintessence.Domain.Services
 
         
         public DefaultTransactionMonitoringService(
+            IAddressService addressService,
             IBlockchainService blockchainService,
             ILogFactory logFactory,
             ITransactionMonitoringTaskRepository transactionMonitoringTaskRepository,
             ITransactionRepository transactionRepository)
         {
+            _addressService = addressService;
             _blockchainService = blockchainService;
             _log = logFactory.CreateLog(this);
             _transactionMonitoringTaskRepository = transactionMonitoringTaskRepository;
@@ -51,6 +54,20 @@ namespace Lykke.Quintessence.Domain.Services
                         transactionChanged = await CheckTransactionConfirmationStateAsync(transaction);
                     }
 
+                    if (transaction.State == TransactionState.Failed && transaction.IsConfirmed)
+                    {
+                        var isContract = await _blockchainService.IsContractAsync(transaction.To);
+
+                        if (isContract)
+                        {
+                            await _addressService.AddAddressToBlacklistAsync
+                            (
+                                address: transaction.To,
+                                reason: $"Transfer to contract failed in transaction [{transaction.TransactionId}]."
+                            );
+                        }
+                    }
+                    
                     if (transactionChanged)
                     {
                         await _transactionRepository.UpdateAsync(transaction);
