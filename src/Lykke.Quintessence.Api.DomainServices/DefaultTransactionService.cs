@@ -187,7 +187,37 @@ namespace Lykke.Quintessence.Domain.Services
                 {
                     case TransactionState.Built:
 
-                        var txHash = await _blockchainService.BroadcastTransactionAsync(signedTxData);
+                        string txHash;
+                        
+                        try
+                        {
+                            txHash = await _blockchainService.BroadcastTransactionAsync(signedTxData);
+                        }
+                        catch (Exception e)
+                        {
+                            _log.Warning
+                            (
+                                $"Failed to broadcast transaction [{transactionId}].", e,
+                                new { transactionId, from = transaction.From, to = transaction.To }
+                            );
+                            
+                            var isContract = await _blockchainService.IsContractAsync(transaction.To);
+
+                            if (isContract)
+                            {
+                                await _addressService.AddAddressToBlacklistAsync
+                                (
+                                    address: transaction.To,
+                                    reason: "Value can not be transferred to this address."
+                                );
+                                
+                                return BroadcastTransactionResult.TransactionCanNotBeBroadcasted();
+                            }
+                            else
+                            {
+                                throw;
+                            }
+                        }
                         
                         transaction.OnBroadcasted
                         (

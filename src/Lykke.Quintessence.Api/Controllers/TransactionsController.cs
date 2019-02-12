@@ -106,6 +106,11 @@ namespace Lykke.Quintessence.Controllers
                             BlockchainErrorResponse.FromKnownError(
                                 BlockchainErrorCode.NotEnoughBalance));
                     
+                    case BroadcastTransactionError.TransactionCanNotBeBroadcasted:
+                        return BadRequest(
+                            BlockchainErrorResponse.FromUnknownError
+                                ($"Transaction with specified id [{request.OperationId}] can not be broadcasted."));
+                    
                     case BroadcastTransactionError.TransactionHasBeenBroadcasted:
                         return Conflict(
                             BlockchainErrorResponse.FromUnknownError

@@ -8,6 +8,9 @@ namespace Lykke.Quintessence.Domain.Services
         public static Error BalanceIsNotEnough()
             => new Error(BroadcastTransactionError.BalanceIsNotEnough);
         
+        public static Error TransactionCanNotBeBroadcasted() 
+            => new Error(BroadcastTransactionError.TransactionCanNotBeBroadcasted);
+        
         public static Error TransactionHasBeenBroadcasted() 
             => new Error(BroadcastTransactionError.TransactionHasBeenBroadcasted);
         
