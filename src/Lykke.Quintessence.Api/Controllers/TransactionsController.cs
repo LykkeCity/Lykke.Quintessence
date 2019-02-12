@@ -68,9 +68,13 @@ namespace Lykke.Quintessence.Controllers
                                 ($"Gas amount for transaction [{request.OperationId}] can not be estimated."));
 
                     case BuildTransactionError.TargetAddressIsInvalid:
+                        // AmountIsTooSmall is the one only error code, that stops transaction execution
+                        // return BadRequest(
+                        //     BlockchainErrorResponse.FromUnknownError
+                        //         ($"Target address [{request.ToAddress}] either is invalid, or blacklisted."));
                         return BadRequest(
-                            BlockchainErrorResponse.FromUnknownError
-                                ($"Target address [{request.ToAddress}] either is invalid, or blacklisted."));
+                            BlockchainErrorResponse.FromKnownError(
+                                BlockchainErrorCode.AmountIsTooSmall));
                     
                     case BuildTransactionError.TransactionHasBeenBroadcasted:
                         return Conflict(
