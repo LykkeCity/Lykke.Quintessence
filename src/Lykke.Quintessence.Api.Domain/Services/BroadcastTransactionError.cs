@@ -3,6 +3,7 @@
     public enum BroadcastTransactionError
     {
         BalanceIsNotEnough,
+        TransactionCanNotBeBroadcasted,
         TransactionHasBeenBroadcasted,
         TransactionHasBeenDeleted,
         TransactionShouldBeRebuilt,
