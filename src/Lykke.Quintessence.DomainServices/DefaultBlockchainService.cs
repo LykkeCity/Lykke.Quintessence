@@ -202,7 +202,7 @@ namespace Lykke.Quintessence.Domain.Services
                     transferAmount: amount
                 );
             }
-            catch (Exception)
+            catch (RpcErrorException)
             {
                 return null;
             }
