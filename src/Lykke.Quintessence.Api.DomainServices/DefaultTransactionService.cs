@@ -95,6 +95,17 @@ namespace Lykke.Quintessence.Domain.Services
                         new { transactionId, from, to }
                     );
                     
+                    var isContract = await _blockchainService.IsContractAsync(to);
+
+                    if (isContract)
+                    {
+                        await _addressService.AddAddressToBlacklistAsync
+                        (
+                            address: to,
+                            reason: gasAmountCalculationResult.ToString()
+                        );
+                    }
+                    
                     return BuildTransactionResult.GasAmountIsInvalid();
                 }
 
