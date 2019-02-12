@@ -66,6 +66,11 @@ namespace Lykke.Quintessence.Controllers
                         return BadRequest(
                             BlockchainErrorResponse.FromUnknownError
                                 ($"Gas amount for transaction [{request.OperationId}] can not be estimated."));
+
+                    case BuildTransactionError.TargetAddressIsInvalid:
+                        return BadRequest(
+                            BlockchainErrorResponse.FromUnknownError
+                                ($"Target address [{request.ToAddress}] either is invalid, or blacklisted."));
                     
                     case BuildTransactionError.TransactionHasBeenBroadcasted:
                         return Conflict(
@@ -76,7 +81,7 @@ namespace Lykke.Quintessence.Controllers
                         return Conflict(
                             BlockchainErrorResponse.FromUnknownError
                                 ($"Transaction for specified operation [{request.OperationId}] has already been deleted."));
-                    
+
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
