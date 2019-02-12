@@ -202,7 +202,7 @@ namespace Lykke.Quintessence.Domain.Services
                     transferAmount: amount
                 );
             }
-            catch (GasAmountEstimationException)
+            catch (Exception)
             {
                 return null;
             }
