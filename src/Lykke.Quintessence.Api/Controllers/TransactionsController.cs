@@ -65,7 +65,7 @@ namespace Lykke.Quintessence.Controllers
                     case BuildTransactionError.GasAmountIsInvalid:
                         return Conflict(
                             BlockchainErrorResponse.FromUnknownError
-                                ($"Gas amount for transaction [{request.OperationId}] ca not be estimated."));
+                                ($"Gas amount for transaction [{request.OperationId}] can not be estimated."));
                     
                     case BuildTransactionError.TransactionHasBeenBroadcasted:
                         return Conflict(
