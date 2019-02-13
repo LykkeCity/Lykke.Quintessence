@@ -108,8 +108,8 @@ namespace Lykke.Quintessence.Domain.Services.DependencyInjection
             this IJobServicesRegistrant registrant)
         {
             registrant
-                .AddDefaultBlockchainService()
-                .AddDefaultAddressService();
+                .AddDefaultAddressService()
+                .AddDefaultBlockchainService();
             
             registrant
                 .Builder
