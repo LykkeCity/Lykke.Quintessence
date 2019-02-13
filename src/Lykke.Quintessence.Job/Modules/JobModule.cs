@@ -59,11 +59,13 @@ namespace Lykke.Quintessence.Modules
                 .AddDefaultBalanceCheckSchedulerLockRepository()
                 .AddDefaultBalanceRepository()
                 .AddDefaultBalanceMonitoringTaskRepository()
+                .AddDefaultBlacklistedAddressRepository()
                 .AddDefaultBlockchainIndexationStateRepository()
                 .AddDefaultBlockIndexationLockRepository()
                 .AddDefaultTransactionReceiptRepository()
                 .AddDefaultTransactionRepository()
-                .AddDefaultTransactionMonitoringTaskRepository();
+                .AddDefaultTransactionMonitoringTaskRepository()
+                .AddDefaultWhitelistedAddressRepository();
             
             builder
                 .RegisterServices
