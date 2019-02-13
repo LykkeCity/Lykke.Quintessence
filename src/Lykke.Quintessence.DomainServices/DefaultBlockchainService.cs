@@ -202,6 +202,16 @@ namespace Lykke.Quintessence.Domain.Services
                     transferAmount: amount
                 );
             }
+            catch (RpcTimeoutException)
+            {
+                // In some cases transaction amount can not be estimated, but
+                // we will not get rpc error response , but timeout.
+                // So, here we check, that node is alive.
+                
+                await _ethApiClient.GetBestBlockNumberAsync();
+
+                return null;
+            }
             catch (RpcErrorException)
             {
                 return null;
