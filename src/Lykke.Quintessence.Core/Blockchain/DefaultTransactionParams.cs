@@ -16,6 +16,7 @@ namespace Lykke.Quintessence.Core.Blockchain
             string to)
         {
             Amount = amount;
+            Data = data;
             From = from;
             GasAmount = gasAmount;
             GasPrice = gasPrice;
