@@ -8,6 +8,7 @@ namespace Lykke.Quintessence.Core.Blockchain
     {
         public DefaultTransactionParams(
             BigInteger amount,
+            string data,
             string from,
             BigInteger gasAmount,
             BigInteger gasPrice,
@@ -24,6 +25,8 @@ namespace Lykke.Quintessence.Core.Blockchain
 
 
         public BigInteger Amount { get; }
+        
+        public string Data { get; }
         
         public string From { get; }
         

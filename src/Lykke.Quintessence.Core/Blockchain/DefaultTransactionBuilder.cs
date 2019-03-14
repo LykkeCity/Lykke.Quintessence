@@ -37,7 +37,7 @@ namespace Lykke.Quintessence.Core.Blockchain
                 nonce: txParams.Nonce,
                 gasPrice: txParams.GasPrice,
                 gasLimit: txParams.GasAmount,
-                data: string.Empty
+                data: txParams.Data ?? string.Empty
             );
 
             var data = _buildRawTransactionStrategy.Execute
