@@ -43,7 +43,8 @@ namespace Lykke.Quintessence.Domain.Services.Strategies
                 amount: transactionAmount,
                 gasAmount: gasAmount,
                 gasPrice: gasPrice,
-                nonce: nonce
+                nonce: nonce,
+                data: null
             );
                 
             await _transactionRepository.AddAsync(Transaction.Create

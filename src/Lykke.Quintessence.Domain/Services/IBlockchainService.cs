@@ -17,7 +17,8 @@ namespace Lykke.Quintessence.Domain.Services
             BigInteger amount,
             BigInteger gasAmount,
             BigInteger gasPrice,
-            BigInteger nonce);
+            BigInteger nonce,
+            string data);
         
         Task<BigInteger> EstimateGasPriceAsync();
         
